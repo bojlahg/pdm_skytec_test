@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GUILoader : GUITemplate
+public class GUILoader : GUIControl
 {
     public Text m_TitleText, m_ProgressBarText;
     public Image m_ProgressFill;
