@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GUIControl : MonoBehaviour
 {
-    [HideInInspector]
-    public Animator m_Animator;
     public delegate void OnAppearStart(GUIControl ctl);
     public delegate void OnAppearFinish(GUIControl ctl);
     public delegate void OnDisappearStart(GUIControl ctl);
@@ -16,68 +14,61 @@ public class GUIControl : MonoBehaviour
     public OnDisappearStart onDisappearStart;
     public OnDisappearFinish onDisappearFinish;
 
-    public virtual void OnInit()
-    {
+    private Animator m_Animator;
 
-    }
-
-    public void Init()
+    public virtual void Init()
     {
         m_Animator = GetComponent<Animator>();
-        OnInit();
     }
 
-
-    public void Show()
+    public virtual void Show()
     {
         if (m_Animator == null)
         {
-            if (onAppearStart != null)
-            {
-                onAppearStart.Invoke(this);
-            }
+            AppearStart();
             gameObject.SetActive(true);
-            if (onAppearFinish != null)
-            {
-                onAppearFinish.Invoke(this);
-            }
+            AppearFinish();
         }
         else
         {
-            if (onAppearStart != null)
-            {
-                onAppearStart.Invoke(this);
-            }
+            AppearStart();
             gameObject.SetActive(true);
             m_Animator.SetBool("Visible", true);
         }
     }
 
-    public void Hide()
+    public virtual void Hide()
     {
         if (m_Animator == null)
         {
-            if (onDisappearStart != null)
-            {
-                onDisappearStart.Invoke(this);
-            }
+            DisappearStart();
             gameObject.SetActive(true);
-            if (onDisappearFinish != null)
-            {
-                onDisappearFinish.Invoke(this);
-            }
+            DisappearFinish();
         }
         else
         {
-            if (onDisappearStart != null)
-            {
-                onDisappearStart.Invoke(this);
-            }
+            DisappearStart();
             m_Animator.SetBool("Visible", false);
         }
     }
 
-    public void AnimationAppearFinish()
+    public virtual void AppearStart()
+    {
+        if (onAppearStart != null)
+        {
+            onAppearStart.Invoke(this);
+        }
+    }
+
+    public virtual void DisappearStart()
+    {
+        if (onDisappearStart != null)
+        {
+            onDisappearStart.Invoke(this);
+        }
+    }
+
+    public virtual void AppearFinish()
     {
         if (onAppearFinish != null)
         {
@@ -85,12 +76,22 @@ public class GUIControl : MonoBehaviour
         }
     }
 
-    public void AnimationDisappearFinish()
+    public virtual void DisappearFinish()
     {
         gameObject.SetActive(false);
         if (onDisappearFinish != null)
         {
             onDisappearFinish.Invoke(this);
         }
+    }
+
+    public void AnimationAppearFinish()
+    {
+        AppearFinish();
+    }
+
+    public void AnimationDisappearFinish()
+    {
+        DisappearFinish();
     }
 }

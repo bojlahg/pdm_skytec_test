@@ -7,8 +7,9 @@ public class GUIText : GUIControl
 {
     public Text m_Text;
 
-    public override void OnInit()
+    public override void Init()
     {
+        base.Init();
         m_Text = GetComponent<Text>();
     }
 

@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GUIController : MonoBehaviour
+public class GUIManager : MonoBehaviour
 {
     public GameObject m_LoaderPrefab, m_MenuPrefab, m_DialogPrefab;
     public Transform m_PrefabRoot, m_LoaderLayer, m_MenuLayer, m_DialogLayer;
 
-    public static GUIController instance { get { return m_Instance; } }
+    public static GUIManager instance { get { return m_Instance; } }
 
-    private static GUIController m_Instance;
+    private static GUIManager m_Instance;
+
+    private List<GUIContainer> m_ContainerStack = new List<GUIContainer>();
 
     private void Awake()
     {
@@ -59,5 +61,50 @@ public class GUIController : MonoBehaviour
     public void Destroy(GUIControl ctl)
     {
         GameObject.Destroy(ctl.gameObject);
+    }
+
+    public void Push(GUIContainer ctl)
+    {
+        GUIContainer top = GetTopContainer();
+        if(top != null)
+        {
+            top.LostFocus();
+        }
+        m_ContainerStack.Add(ctl);
+    }
+
+    public void Pop()
+    {
+        m_ContainerStack.RemoveAt(m_ContainerStack.Count - 1);
+
+        GUIContainer top = GetTopContainer();
+        if (top != null)
+        {
+            top.GotFocus();
+        }
+    }
+
+    public GUIContainer GetTopContainer()
+    {
+        if(m_ContainerStack.Count > 0)
+        { 
+            return m_ContainerStack[m_ContainerStack.Count - 1];
+        }
+        return null;
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GUIContainer ctl = GetTopContainer();
+            if (ctl != null)
+            {
+                if (ctl.onBackKeyDown != null)
+                {
+                    ctl.onBackKeyDown.Invoke();
+                }
+            }
+        }
     }
 }
