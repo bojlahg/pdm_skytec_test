@@ -5,19 +5,27 @@ using UnityEngine.UI;
 
 public class GUIButton : GUIControl
 {
-    public delegate void OnButtonClick();
-    public OnButtonClick onButtonClick;
+    public delegate void OnButtonClickEvent();
+    public OnButtonClickEvent onButtonClick;
 
-    [HideInInspector]
-    public Button m_Button;
     public Image m_IconImage;
     public Text m_CaptionText;
+
+    private Button m_Button;
 
     public override void Init()
     {
         base.Init();
         m_Button = GetComponent<Button>();
-        m_Button.onClick.AddListener(() => { if (onButtonClick != null) { onButtonClick(); } });
+        m_Button.onClick.AddListener(OnButtonClick);
+    }
+
+    private void OnButtonClick()
+    {
+        if (onButtonClick != null)
+        {
+            onButtonClick();
+        }
     }
 
     public void SetCaption(string t)

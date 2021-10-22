@@ -8,8 +8,8 @@ public class GUISlider : GUIControl
     public delegate void OnValueChanged(GUIControl ctl, float v);
     public OnValueChanged onValueChanged;
 
-    [HideInInspector]
-    public Slider m_Slider;
+    
+    private Slider m_Slider;
     public Text m_CaptionText;
 
     public override void Init()

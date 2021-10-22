@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GUIText : GUIControl
 {
-    public Text m_Text;
+    private Text m_Text;
 
     public override void Init()
     {

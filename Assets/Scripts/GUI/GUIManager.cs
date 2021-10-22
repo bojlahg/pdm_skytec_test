@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GUIManager : MonoBehaviour
 {
-    public GameObject[] m_Prefabs;
+    public GameObject[] m_Prefabs, m_DeactObjects;
     public Transform[] m_Layers;
 
     public static GUIManager instance { get { return m_Instance; } }
@@ -34,6 +34,11 @@ public class GUIManager : MonoBehaviour
                 }
             }
             m_Prefabs[i].SetActive(false);
+        }
+
+        for (int i = 0; i < m_DeactObjects.Length; ++i)
+        {
+            m_DeactObjects[i].SetActive(false);
         }
     }
 

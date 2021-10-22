@@ -4,33 +4,31 @@ using UnityEngine;
 
 public class MyCreditsMenu : MonoBehaviour
 {
-    public MyMainMenu m_MyMainMenu;
-
-    private GUIMenu m_CreditsMenu;
+    private GUIMenu m_Menu;
 
     public void Create()
     {
-        m_CreditsMenu = GUIManager.instance.Create<GUIMenu>(0);
-        m_CreditsMenu.SetTitle("О Игре");
-        m_CreditsMenu.onDisappearFinish = GUIManager.instance.Destroy;
-        m_CreditsMenu.onBackKeyDown = BackButton_Click;
+        m_Menu = GUIManager.instance.Create<GUIMenu>(0);
+        m_Menu.SetTitle("О Игре");
+        m_Menu.onDisappearFinish = GUIManager.instance.Destroy;
+        m_Menu.onBackKeyDown = BackButton_Click;
 
-        GUIText creditsText = m_CreditsMenu.Create<GUIText>();
+        GUIText creditsText = m_Menu.Create<GUIText>();
         creditsText.SetText("Разработчик:\nДмитрий Приходько\nbojlahg@gmail.com");
         creditsText.Show();
 
-        GUIButton backButton = m_CreditsMenu.Create<GUIButton>();
+        GUIButton backButton = m_Menu.Create<GUIButton>();
         backButton.SetCaption("Назад");
         backButton.SetIcon(null);
         backButton.onButtonClick = BackButton_Click;
         backButton.Show();
 
-        m_CreditsMenu.Show();
+        m_Menu.Show();
     }
 
     private void BackButton_Click()
     {
-        m_MyMainMenu.Create();
-        m_CreditsMenu.Hide();
+        MyApp.instance.m_MyMainMenu.Create();
+        m_Menu.Hide();
     }
 }

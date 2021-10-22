@@ -9,7 +9,7 @@ public class GUIContainer : GUIControl
 
     public CanvasGroup m_CanvasGroup;
     public Transform m_ControlRoot;
-    
+
 
     public override void Init()
     {
@@ -64,9 +64,19 @@ public class GUIContainer : GUIControl
         m_CanvasGroup.blocksRaycasts = false;
     }
 
+    public virtual void OnCreateControl(GUIControl ctl)
+    {
+    }
+
+    public virtual void OnDestroyControl(GUIControl ctl)
+    {
+    }
+
     public T Create<T>() where T : GUIControl
     {
-        return GUIManager.instance.Create<T>(m_ControlRoot);
+        T ctl = GUIManager.instance.Create<T>(m_ControlRoot);
+        OnCreateControl(ctl);
+        return ctl;
     }
 
     public T[] CreateMultiple<T>(int cnt) where T : GUIControl
@@ -81,6 +91,7 @@ public class GUIContainer : GUIControl
 
     public void Destroy(GUIControl ctl)
     {
+        OnDestroyControl(ctl);
         GameObject.Destroy(ctl.gameObject);
     }
 }

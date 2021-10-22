@@ -5,23 +5,39 @@ using UnityEngine.UI;
 
 public class GUIToggle : GUIControl
 {
-    public delegate void OnValueChanged(GUIControl ctl, bool v);
-    public OnValueChanged onValueChanged;
+    public delegate void OnValueChangedEvent(GUIControl ctl, bool v);
+    public OnValueChangedEvent onValueChanged;
 
-    [HideInInspector]
-    public Toggle m_Toggle;
     public Text m_CaptionText;
+
+    private Toggle m_Toggle;
 
     public override void Init()
     {
         base.Init();
         m_Toggle = GetComponent<Toggle>();
-        m_Toggle.onValueChanged.AddListener((v) => { if (onValueChanged != null) { onValueChanged(this, v); } });
+        m_Toggle.onValueChanged.AddListener(OnValueChanged);
+    }
+
+    private void OnValueChanged(bool v)
+    {
+        if (onValueChanged != null)
+        {
+            onValueChanged(this, v);
+        }
     }
 
     public void SetCaption(string t)
     {
-        m_CaptionText.text = t;
+        if (t == null || t.Length == 0)
+        {
+            m_CaptionText.gameObject.SetActive(false);
+        }
+        else
+        {
+            m_CaptionText.gameObject.SetActive(true);
+            m_CaptionText.text = t;
+        }
     }
 
     public void SetCheckState(bool c)
