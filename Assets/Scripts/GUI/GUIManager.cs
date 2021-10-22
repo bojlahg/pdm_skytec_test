@@ -4,58 +4,65 @@ using UnityEngine;
 
 public class GUIManager : MonoBehaviour
 {
-    public GameObject m_LoaderPrefab, m_MenuPrefab, m_DialogPrefab;
-    public Transform m_PrefabRoot, m_LoaderLayer, m_MenuLayer, m_DialogLayer;
+    public GameObject[] m_Prefabs;
+    public Transform[] m_Layers;
 
     public static GUIManager instance { get { return m_Instance; } }
 
     private static GUIManager m_Instance;
 
+    private Dictionary<string, GameObject> m_PrefabDict = new Dictionary<string, GameObject>();
     private List<GUIContainer> m_ContainerStack = new List<GUIContainer>();
+
 
     private void Awake()
     {
         m_Instance = this;
 
-        InitRecursive(m_PrefabRoot);
-    }
-
-    public void InitRecursive(Transform root)
-    {
-        for (int i = 0; i < root.childCount; ++i)
+        for(int i = 0; i < m_Prefabs.Length; ++i)
         {
-            Transform child = root.GetChild(i);
-            GUIControl ctl = child.GetComponent<GUIControl>();
+            GUIControl ctl = m_Prefabs[i].GetComponent<GUIControl>();
             if (ctl != null)
             {
-                ctl.gameObject.SetActive(false);
+                if (!m_PrefabDict.ContainsKey(ctl.GetType().Name))
+                {
+                    m_PrefabDict.Add(ctl.GetType().Name, m_Prefabs[i]);
+                }
+                else
+                {
+                    Debug.LogErrorFormat("GUIManager: Duplicate prefab type name: {0}", ctl.GetType().Name);
+                }
             }
-            InitRecursive(child);
+            m_Prefabs[i].SetActive(false);
         }
     }
 
-    public GUILoader CreateLoader()
+    public T Create<T>(int layerIdx) where T: GUIControl
     {
-        GameObject go = GameObject.Instantiate(m_LoaderPrefab, m_LoaderLayer);
-        GUILoader loader = go.GetComponent<GUILoader>();
-        loader.Init();
-        return loader;
+        string typename = typeof(T).Name;
+        GameObject prefab;
+        if(m_PrefabDict.TryGetValue(typename, out prefab))
+        {
+            T obj = GameObject.Instantiate(prefab, m_Layers[layerIdx]).GetComponent<T>();
+            obj.Init();
+            return obj;
+        }
+        Debug.LogErrorFormat("Unknown control type name: {0}", typename);
+        return null;
     }
 
-    public GUIMenu CreateMenu()
+    public T Create<T>(Transform tfm) where T : GUIControl
     {
-        GameObject go = GameObject.Instantiate(m_MenuPrefab, m_MenuLayer);
-        GUIMenu menu = go.GetComponent<GUIMenu>();
-        menu.Init();
-        return menu;
-    }
-
-    public GUIDialog CreateDialog()
-    {
-        GameObject go = GameObject.Instantiate(m_DialogPrefab, m_DialogLayer);
-        GUIDialog dialog = go.GetComponent<GUIDialog>();
-        dialog.Init();
-        return dialog;
+        string typename = typeof(T).Name;
+        GameObject prefab;
+        if (m_PrefabDict.TryGetValue(typename, out prefab))
+        {
+            T obj = GameObject.Instantiate(prefab, tfm).GetComponent<T>();
+            obj.Init();
+            return obj;
+        }
+        Debug.LogErrorFormat("Unknown control type name: {0}", typename);
+        return null;
     }
 
     public void Destroy(GUIControl ctl)

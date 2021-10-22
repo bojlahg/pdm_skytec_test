@@ -11,24 +11,24 @@ public class MySettingsMenu : MonoBehaviour
 
     public void Create()
     {
-        m_SettingsMenu = GUIManager.instance.CreateMenu();
+        m_SettingsMenu = GUIManager.instance.Create<GUIMenu>(0);
         m_SettingsMenu.SetTitle("Настройки");
         m_SettingsMenu.onDisappearFinish = GUIManager.instance.Destroy;
         m_SettingsMenu.onBackKeyDown = BackButton_Click;
 
-        GUISlider volumeSlider = m_SettingsMenu.CreateSlider();
+        GUISlider volumeSlider = m_SettingsMenu.Create<GUISlider>();
         volumeSlider.SetCaption("Громкость");
         volumeSlider.SetValue(m_MySettings.m_Volume);
         volumeSlider.onValueChanged = VolumeSlider_ValueChanged;
         volumeSlider.Show();
 
-        GUIToggle musicToggle = m_SettingsMenu.CreateToggle();
+        GUIToggle musicToggle = m_SettingsMenu.Create<GUIToggle>();
         musicToggle.SetCaption("Музыка");
         musicToggle.SetCheckState(m_MySettings.m_MusicEnabled);
         musicToggle.onValueChanged = MusicToggle_ValueChanged;
         musicToggle.Show();
 
-        GUIButton backButton = m_SettingsMenu.CreateButton();
+        GUIButton backButton = m_SettingsMenu.Create<GUIButton>();
         backButton.SetCaption("Назад");
         backButton.SetIcon(null);
         backButton.onButtonClick = BackButton_Click;

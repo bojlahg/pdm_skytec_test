@@ -10,19 +10,19 @@ public class MyExitDialog : MonoBehaviour
 
     public void Create()
     {
-        m_Dialog = GUIManager.instance.CreateDialog();
+        m_Dialog = GUIManager.instance.Create<GUIDialog>(1);
         m_Dialog.SetTitle("Ой-Ой!");
         m_Dialog.SetMessage("Вы точно хотите выйти из игры?");
         m_Dialog.onBackKeyDown = NoButton_Click;
         m_Dialog.onDisappearFinish = GUIManager.instance.Destroy;
 
-        GUIButton yesButton = m_Dialog.CreateButton();
+        GUIButton yesButton = m_Dialog.Create<GUIButton>();
         yesButton.SetCaption("Да");
         yesButton.SetIcon(m_YesIconSprite);
         yesButton.onButtonClick = YesButton_Click;
         yesButton.Show();
 
-        GUIButton noButton = m_Dialog.CreateButton();
+        GUIButton noButton = m_Dialog.Create<GUIButton>();
         noButton.SetCaption("Нет");
         noButton.SetIcon(m_NoIconSprite);
         noButton.onButtonClick = NoButton_Click;

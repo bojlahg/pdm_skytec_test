@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GUIControl : MonoBehaviour
 {
+    public delegate GUIControl CreateMethod();
     public delegate void OnAppearStart(GUIControl ctl);
     public delegate void OnAppearFinish(GUIControl ctl);
     public delegate void OnDisappearStart(GUIControl ctl);

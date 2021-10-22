@@ -14,7 +14,7 @@ public class MyLoader : MonoBehaviour
     {
         m_PrevTextIndex = -1;
 
-        m_Loader = GUIManager.instance.CreateLoader();
+        m_Loader = GUIManager.instance.Create<GUILoader>(2);
         m_Loader.SetTitle("Загрузка");
         m_Loader.SetProgressText("Загружаем ресурсы...");
         m_Loader.SetProgress(0);
