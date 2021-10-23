@@ -44,27 +44,22 @@ public class MyMainMenu : MonoBehaviour
         m_Menu.Show();
     }
 
-    public void Free()
-    {
-        m_Menu.Hide();
-    }
-
     private void PlayButton_Click()
     {
-        MyApp.instance.m_MyModeMenu.Create();
         m_Menu.Hide();
+        MyApp.instance.m_MyModeMenu.Create();
     }
 
     private void SettingsButton_Click()
     {
-        MyApp.instance.m_MySettingsMenu.Create();
         m_Menu.Hide();
+        MyApp.instance.m_MySettingsMenu.Create();        
     }
 
     private void CreditsButton_Click()
     {
-        MyApp.instance.m_MyCreditsMenu.Create();
         m_Menu.Hide();
+        MyApp.instance.m_MyCreditsMenu.Create();        
     }
 
     private void BackButton_Click()

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GUIDialog : GUIContainer
+public class GUIDialog : GUIPanel
 {
     public Text m_TitleText, m_MessageText;
 

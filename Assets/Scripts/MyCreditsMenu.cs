@@ -28,7 +28,7 @@ public class MyCreditsMenu : MonoBehaviour
 
     private void BackButton_Click()
     {
-        MyApp.instance.m_MyMainMenu.Create();
         m_Menu.Hide();
+        MyApp.instance.m_MyMainMenu.Create();
     }
 }

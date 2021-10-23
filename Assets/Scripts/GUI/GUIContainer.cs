@@ -4,65 +4,7 @@ using UnityEngine;
 
 public class GUIContainer : GUIControl
 {
-    public delegate void OnBackKeyDown();
-    public OnBackKeyDown onBackKeyDown;
-
-    public CanvasGroup m_CanvasGroup;
     public Transform m_ControlRoot;
-
-
-    public override void Init()
-    {
-        base.Init();
-    }
-
-    public override void Show()
-    {
-        //GUIController.instance.Push(this);
-        base.Show();
-    }
-
-    public override void Hide()
-    {
-        //GUIController.instance.Pop();
-        base.Hide();
-    }
-
-    public override void AppearStart()
-    {
-        GUIManager.instance.Push(this);
-        m_CanvasGroup.blocksRaycasts = false;
-        base.AppearStart();
-    }
-
-    public override void AppearFinish()
-    {
-        m_CanvasGroup.blocksRaycasts = true;
-        base.AppearFinish();
-    }
-
-    public override void DisappearStart()
-    {
-        m_CanvasGroup.blocksRaycasts = false;
-        base.DisappearStart();
-    }
-
-    public override void DisappearFinish()
-    {
-        GUIManager.instance.Pop();
-        m_CanvasGroup.blocksRaycasts = true;
-        base.DisappearFinish();
-    }
-
-    public void GotFocus()
-    {
-        m_CanvasGroup.blocksRaycasts = true;
-    }
-
-    public void LostFocus()
-    {
-        m_CanvasGroup.blocksRaycasts = false;
-    }
 
     public virtual void OnCreateControl(GUIControl ctl)
     {

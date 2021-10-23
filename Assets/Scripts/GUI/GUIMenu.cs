@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GUIMenu : GUIContainer
+public class GUIMenu : GUIPanel
 {
     public Text m_TitleText;
 

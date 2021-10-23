@@ -8,6 +8,7 @@ public class MyLoader : MonoBehaviour
     public MyMainMenu m_MyMainMenu;
 
     private GUILoader m_Loader;
+    private GUIProgressBar m_ProgressBar;
     private int m_PrevTextIndex = -1;
 
     public void Create()
@@ -16,10 +17,13 @@ public class MyLoader : MonoBehaviour
 
         m_Loader = GUIManager.instance.Create<GUILoader>(2);
         m_Loader.SetTitle("Загрузка");
-        m_Loader.SetProgressText("Загружаем ресурсы...");
-        m_Loader.SetProgress(0);
-        m_Loader.onDisappearFinish += LoaderFinished;
-        m_Loader.onDisappearFinish += GUIManager.instance.Destroy;
+        m_Loader.onDisappearFinish = LoaderFinished;
+
+        m_ProgressBar = m_Loader.Create<GUIProgressBar>();
+        m_ProgressBar.SetProgress(0);
+        m_ProgressBar.SetText("Загружаем ресурсы...");
+        m_ProgressBar.Show();
+
         m_Loader.Show();
     }
 
@@ -34,9 +38,9 @@ public class MyLoader : MonoBehaviour
         if (textIndex != m_PrevTextIndex && textIndex < m_ProgressTexts.Length)
         {
             m_PrevTextIndex = textIndex;
-            m_Loader.SetProgressText(m_ProgressTexts[textIndex]);
+            m_ProgressBar.SetText(m_ProgressTexts[textIndex]);
         }
-        m_Loader.SetProgress(v);
+        m_ProgressBar.SetProgress(v);
     }
 
     private void LoaderFinished(GUIControl ctl)

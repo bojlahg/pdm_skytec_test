@@ -12,7 +12,7 @@ public class GUIManager : MonoBehaviour
     private static GUIManager m_Instance;
 
     private Dictionary<string, GameObject> m_PrefabDict = new Dictionary<string, GameObject>();
-    private List<GUIContainer> m_ContainerStack = new List<GUIContainer>();
+    private List<GUIPanel> m_PanelStack = new List<GUIPanel>();
 
 
     private void Awake()
@@ -75,32 +75,35 @@ public class GUIManager : MonoBehaviour
         GameObject.Destroy(ctl.gameObject);
     }
 
-    public void Push(GUIContainer ctl)
+    public void Push(GUIPanel ctl)
     {
-        GUIContainer top = GetTopContainer();
+        Debug.LogFormat("Push {0}", ctl.name);
+        GUIPanel top = GetTopPanel();
         if(top != null)
         {
             top.LostFocus();
         }
-        m_ContainerStack.Add(ctl);
+        m_PanelStack.Add(ctl);
     }
 
     public void Pop()
     {
-        m_ContainerStack.RemoveAt(m_ContainerStack.Count - 1);
+        Debug.LogFormat("Pop {0}", m_PanelStack[m_PanelStack.Count - 1].name);
 
-        GUIContainer top = GetTopContainer();
+        m_PanelStack.RemoveAt(m_PanelStack.Count - 1);
+
+        GUIPanel top = GetTopPanel();
         if (top != null)
         {
             top.GotFocus();
         }
     }
 
-    public GUIContainer GetTopContainer()
+    public GUIPanel GetTopPanel()
     {
-        if(m_ContainerStack.Count > 0)
+        if(m_PanelStack.Count > 0)
         { 
-            return m_ContainerStack[m_ContainerStack.Count - 1];
+            return m_PanelStack[m_PanelStack.Count - 1];
         }
         return null;
     }
@@ -109,7 +112,7 @@ public class GUIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            GUIContainer ctl = GetTopContainer();
+            GUIPanel ctl = GetTopPanel();
             if (ctl != null)
             {
                 if (ctl.onBackKeyDown != null)
