@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyExitDialog : MonoBehaviour
+public class MyYesNoDialog : MonoBehaviour
 {
+    public delegate void OnAnswer(int aidx);
+    public OnAnswer onAnswer;
+
     public Sprite m_YesIconSprite, m_NoIconSprite;
 
     private GUIDialog m_Dialog;
@@ -11,9 +14,8 @@ public class MyExitDialog : MonoBehaviour
     public void Create()
     {
         m_Dialog = GUIManager.instance.Create<GUIDialog>(1);
-        m_Dialog.SetTitle("Ой-Ой!");
-        m_Dialog.SetMessage("Вы точно хотите выйти из игры?");
-        m_Dialog.onBackKeyDown = NoButton_Click;
+       
+        m_Dialog.onBackKeyDown = YesButton_Click;
         m_Dialog.onDisappearFinish = GUIManager.instance.Destroy;
 
         GUIButton yesButton = m_Dialog.Create<GUIButton>();
@@ -31,18 +33,33 @@ public class MyExitDialog : MonoBehaviour
         m_Dialog.Show();
     }
 
-    public void Free()
+    public void SetTitle(string t)
     {
-        m_Dialog.Hide();
+        m_Dialog.SetTitle(t);
+    }
+
+    public void SetMessage(string m)
+    {
+        m_Dialog.SetMessage(m);
     }
 
     private void YesButton_Click()
     {
-        Application.Quit();
+        if(onAnswer != null)
+        {
+            onAnswer.Invoke(0);
+        }
+        onAnswer = null;
+        m_Dialog.Hide();
     }
 
     private void NoButton_Click()
     {
+        if (onAnswer != null)
+        {
+            onAnswer.Invoke(1);
+        }
+        onAnswer = null;
         m_Dialog.Hide();
     }
 }

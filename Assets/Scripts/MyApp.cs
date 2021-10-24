@@ -15,8 +15,7 @@ public class MyApp : MonoBehaviour
     public MyModeMenu m_MyModeMenu;
     public MySettingsMenu m_MySettingsMenu;
     public MyCreditsMenu m_MyCreditsMenu;
-    public MyExitDialog m_MyExitDialog;
-    public MyAbortDialog m_MyAbortDialog;
+    public MyYesNoDialog m_MyYesNoDialog;
     public MyGameMenu m_MyGameMenu;
     public MyPauseMenu m_MyPauseMenu;
 

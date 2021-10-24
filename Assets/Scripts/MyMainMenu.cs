@@ -64,6 +64,21 @@ public class MyMainMenu : MonoBehaviour
 
     private void BackButton_Click()
     {
-        MyApp.instance.m_MyExitDialog.Create();
+        MyApp.instance.m_MyYesNoDialog.Create();
+        MyApp.instance.m_MyYesNoDialog.SetTitle("Ой-Ой!");
+        MyApp.instance.m_MyYesNoDialog.SetMessage("Вы точно хотите выйти из игры?");
+        MyApp.instance.m_MyYesNoDialog.onAnswer = QuitDialogAnswer;
+    }
+
+    private void QuitDialogAnswer(int aidx)
+    {
+        if(aidx == 0)
+        {
+            Application.Quit();
+        }
+        else
+        {
+
+        }
     }
 }

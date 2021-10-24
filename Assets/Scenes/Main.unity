@@ -1353,8 +1353,7 @@ MonoBehaviour:
   m_MyModeMenu: {fileID: 1645189985}
   m_MySettingsMenu: {fileID: 596580835}
   m_MyCreditsMenu: {fileID: 1101720058}
-  m_MyExitDialog: {fileID: 1685684386}
-  m_MyAbortDialog: {fileID: 1014919334}
+  m_MyYesNoDialog: {fileID: 1685684386}
   m_MyGameMenu: {fileID: 1968414010}
   m_MyPauseMenu: {fileID: 1482054177}
 --- !u!4 &325933461
@@ -1378,7 +1377,7 @@ Transform:
   - {fileID: 1968414009}
   - {fileID: 1482054176}
   - {fileID: 1685684385}
-  - {fileID: 1014919333}
+  - {fileID: 1124449807}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3731,51 +3730,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1002736026}
   m_CullTransparentMesh: 0
---- !u!1 &1014919332
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1014919333}
-  - component: {fileID: 1014919334}
-  m_Layer: 0
-  m_Name: MyAbortDialog
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1014919333
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1014919332}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 325933461}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1014919334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1014919332}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3955654c01162d4458a4c53c016f6291, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_YesIconSprite: {fileID: 21300000, guid: ebece275ca1f128469338b4067936dd0, type: 3}
-  m_NoIconSprite: {fileID: 21300000, guid: 027315da6f93af54b855afd760010d0a, type: 3}
 --- !u!1 &1031227764
 GameObject:
   m_ObjectHideFlags: 0
@@ -4218,6 +4172,50 @@ MonoBehaviour:
   m_ControlRoot: {fileID: 1223722985}
   m_CanvasGroup: {fileID: 1223722990}
   m_TitleText: {fileID: 2073006671}
+--- !u!1 &1124449806
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1124449807}
+  - component: {fileID: 1124449808}
+  m_Layer: 0
+  m_Name: MyOkDialog
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1124449807
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1124449806}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 325933461}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1124449808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1124449806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7af691258acd6d647ba560a48a4f04d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OkIconSprite: {fileID: 21300000, guid: 1b1214ded38a44591b489b2e36ec5d27, type: 3}
 --- !u!1 &1181528846
 GameObject:
   m_ObjectHideFlags: 0
@@ -5597,7 +5595,7 @@ GameObject:
   - component: {fileID: 1685684385}
   - component: {fileID: 1685684386}
   m_Layer: 0
-  m_Name: MyExitDialog
+  m_Name: MyYesNoDialog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5629,8 +5627,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfff4cdf3a1bff94ebb23dda8bd4f6b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_YesIconSprite: {fileID: 21300000, guid: ebece275ca1f128469338b4067936dd0, type: 3}
-  m_NoIconSprite: {fileID: 21300000, guid: 027315da6f93af54b855afd760010d0a, type: 3}
+  m_YesIconSprite: {fileID: 21300000, guid: 1b1214ded38a44591b489b2e36ec5d27, type: 3}
+  m_NoIconSprite: {fileID: 21300000, guid: 3e5eab4a7c3ec46fa821faad1fe5642c, type: 3}
 --- !u!1 &1690616455
 GameObject:
   m_ObjectHideFlags: 0
