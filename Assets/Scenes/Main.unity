@@ -2633,21 +2633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad7030badb0c86942b101b8cdd423f65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Prefabs:
-  - {fileID: 1119864420}
-  - {fileID: 895123001}
-  - {fileID: 1690616455}
-  - {fileID: 400358449}
-  - {fileID: 262694207}
-  - {fileID: 1513175525}
-  - {fileID: 1256871155}
-  - {fileID: 433709216}
-  - {fileID: 177480321}
-  - {fileID: 1835616154}
-  - {fileID: 1031227764}
-  - {fileID: 962723677}
-  m_DeactObjects:
-  - {fileID: 933052922}
+  m_PrefabRoot: {fileID: 1781578230}
   m_Layers:
   - {fileID: 871016264}
   - {fileID: 166102602}
@@ -3842,7 +3828,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1031227764}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b00cdc56be87d44b9e24743516c2125, type: 3}
+  m_Script: {fileID: 11500000, guid: d9969af88f169174da68c727d58118d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_CaptionText: {fileID: 202883702}

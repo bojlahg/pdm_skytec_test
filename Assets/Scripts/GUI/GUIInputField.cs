@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GUIInput : GUIControl
+public class GUIInputField : GUIControl
 {
     public delegate void OnValueChangedEvent(GUIControl ctl, string v);
     public delegate void OnEndEditEvent(GUIControl ctl, string v);

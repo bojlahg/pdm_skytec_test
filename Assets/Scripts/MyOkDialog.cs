@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyOkDialog : MonoBehaviour
+public class MyOkDialog : MonoBehaviour, IUserInterface
 {
     public delegate void OnAnswer(int aidx);
     public OnAnswer onAnswer;
@@ -13,18 +13,33 @@ public class MyOkDialog : MonoBehaviour
 
     public void Create()
     {
-        m_Dialog = GUIManager.instance.Create<GUIDialog>(1);
+        m_Dialog = GUIManager.instance.Create<GUIDialog>("Dialog", 1);
        
         m_Dialog.onBackKeyDown = OkButton_Click;
         m_Dialog.onDisappearFinish = GUIManager.instance.Destroy;
 
-        GUIButton okButton = m_Dialog.Create<GUIButton>();
+        GUIButton okButton = m_Dialog.Create<GUIButton>("Button");
         okButton.SetCaption("Ok");
         okButton.SetIcon(m_OkIconSprite);
         okButton.onButtonClick = OkButton_Click;
         okButton.Show();
 
         m_Dialog.Show();
+    }
+
+    public void Free()
+    {
+        GUIManager.instance.Destroy(m_Dialog);
+    }
+
+    public void Show()
+    {
+        m_Dialog.Show();
+    }
+
+    public void Hide()
+    {
+        m_Dialog.Hide();
     }
 
     public void SetTitle(string t)

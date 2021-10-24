@@ -2,30 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyPauseMenu : MonoBehaviour
+public class MyPauseMenu : MonoBehaviour, IUserInterface
 {
     private GUIWindowMenu m_Menu;
 
     public void Create()
     {
-        m_Menu = GUIManager.instance.Create<GUIWindowMenu>(0);
+        m_Menu = GUIManager.instance.Create<GUIWindowMenu>("WindowMenu", 0);
         m_Menu.SetTitle("Пауза");
         m_Menu.onDisappearFinish = GUIManager.instance.Destroy;
         m_Menu.onBackKeyDown = HomeButton_Click;
 
-        GUIButton buttonSettings = m_Menu.Create<GUIButton>();
+        GUIButton buttonSettings = m_Menu.Create<GUIButton>("Button");
         buttonSettings.SetCaption("Настройки");
         buttonSettings.SetIcon(null);
         buttonSettings.onButtonClick = SettingsButton_Click;
         buttonSettings.Show();
 
-        GUIButton buttonHome = m_Menu.Create<GUIButton>();
+        GUIButton buttonHome = m_Menu.Create<GUIButton>("Button");
         buttonHome.SetCaption("Выйти");
         buttonHome.SetIcon(null);
         buttonHome.onButtonClick = HomeButton_Click;
         buttonHome.Show();
 
-        GUIButton buttonResume = m_Menu.Create<GUIButton>();
+        GUIButton buttonResume = m_Menu.Create<GUIButton>("Button");
         buttonResume.SetCaption("Продолжить");
         buttonResume.SetIcon(null);
         buttonResume.onButtonClick = ResumeButton_Click;
@@ -34,14 +34,44 @@ public class MyPauseMenu : MonoBehaviour
         m_Menu.Show();
     }
 
+    public void Free()
+    {
+        GUIManager.instance.Destroy(m_Menu);
+    }
+
+    public void Show()
+    {
+        m_Menu.Show();
+    }
+
+    public void Hide()
+    {
+        m_Menu.Hide();
+    }
+
     private void SettingsButton_Click()
     {
         m_Menu.Hide();
         MyApp.instance.m_MySettingsMenu.Create();
+        MyApp.instance.m_MySettingsMenu.m_ReturnTo = this;
     }
 
     private void HomeButton_Click()
     {
+        MyApp.instance.m_MyYesNoDialog.Create();
+        MyApp.instance.m_MyYesNoDialog.SetTitle("Покинуть игру?");
+        MyApp.instance.m_MyYesNoDialog.SetMessage("Вы точно хотите прервать неоконченную игру?");
+        MyApp.instance.m_MyYesNoDialog.onAnswer = AbortDialogAnswer;
+    }
+
+    private void AbortDialogAnswer(int aidx)
+    {
+        if (aidx == 0)
+        {
+            m_Menu.Hide();
+            MyApp.instance.m_MyMainMenu.Create();
+            MyApp.instance.m_MyGame.AbortGame();
+        }
     }
 
     private void ResumeButton_Click()

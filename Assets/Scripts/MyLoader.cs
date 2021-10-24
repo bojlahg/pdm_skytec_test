@@ -15,12 +15,12 @@ public class MyLoader : MonoBehaviour
     {
         m_PrevTextIndex = -1;
 
-        m_Loader = GUIManager.instance.Create<GUILoader>(2);
+        m_Loader = GUIManager.instance.Create<GUILoader>("Loader", 2);
         m_Loader.SetTitle("Загрузка");
         m_Loader.onAppearFinish = LoaderStarted;
         m_Loader.onDisappearFinish = LoaderFinished;
 
-        m_ProgressBar = m_Loader.Create<GUIProgressBar>();
+        m_ProgressBar = m_Loader.Create<GUIProgressBar>("ProgressBar");
         m_ProgressBar.SetProgress(0);
         m_ProgressBar.SetText("Загружаем ресурсы...");
         m_ProgressBar.Show();

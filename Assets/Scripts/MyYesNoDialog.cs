@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyYesNoDialog : MonoBehaviour
+public class MyYesNoDialog : MonoBehaviour, IUserInterface
 {
     public delegate void OnAnswer(int aidx);
     public OnAnswer onAnswer;
@@ -13,24 +13,39 @@ public class MyYesNoDialog : MonoBehaviour
 
     public void Create()
     {
-        m_Dialog = GUIManager.instance.Create<GUIDialog>(1);
+        m_Dialog = GUIManager.instance.Create<GUIDialog>("Dialog", 1);
        
         m_Dialog.onBackKeyDown = YesButton_Click;
         m_Dialog.onDisappearFinish = GUIManager.instance.Destroy;
 
-        GUIButton yesButton = m_Dialog.Create<GUIButton>();
+        GUIButton yesButton = m_Dialog.Create<GUIButton>("Button");
         yesButton.SetCaption("Да");
         yesButton.SetIcon(m_YesIconSprite);
         yesButton.onButtonClick = YesButton_Click;
         yesButton.Show();
 
-        GUIButton noButton = m_Dialog.Create<GUIButton>();
+        GUIButton noButton = m_Dialog.Create<GUIButton>("Button");
         noButton.SetCaption("Нет");
         noButton.SetIcon(m_NoIconSprite);
         noButton.onButtonClick = NoButton_Click;
         noButton.Show();
 
         m_Dialog.Show();
+    }
+
+    public void Free()
+    {
+        GUIManager.instance.Destroy(m_Dialog);
+    }
+
+    public void Show()
+    {
+        m_Dialog.Show();
+    }
+
+    public void Hide()
+    {
+        m_Dialog.Hide();
     }
 
     public void SetTitle(string t)

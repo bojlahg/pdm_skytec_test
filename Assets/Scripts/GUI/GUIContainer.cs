@@ -65,19 +65,19 @@ public class GUIContainer : GUIControl
     {
     }
 
-    public T Create<T>() where T : GUIControl
+    public T Create<T>(string n) where T : GUIControl
     {
-        T ctl = GUIManager.instance.Create<T>(m_ControlRoot);
+        T ctl = GUIManager.instance.Create<T>(n, m_ControlRoot);
         OnCreateControl(ctl);
         return ctl;
     }
 
-    public T[] CreateMultiple<T>(int cnt) where T : GUIControl
+    public T[] CreateMultiple<T>(string n, int cnt) where T : GUIControl
     {
         T[] ctls = new T[cnt];
         for (int i = 0; i < cnt; ++i)
         {
-            ctls[i] = Create<T>();
+            ctls[i] = Create<T>(n);
         }
         return ctls;
     }

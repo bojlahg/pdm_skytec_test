@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyGameMenu : MonoBehaviour
+public class MyGameMenu : MonoBehaviour, IUserInterface
 {
     public Sprite m_PauseIconSprite;
 
@@ -10,7 +10,7 @@ public class MyGameMenu : MonoBehaviour
 
     public void Create()
     {
-        m_Menu = GUIManager.instance.Create<GUIScreenMenu>(0);
+        m_Menu = GUIManager.instance.Create<GUIScreenMenu>("ScreenMenu", 0);
 
         GUIButton buttonPause = m_Menu.GetControl<GUIButton>("PauseButton");
         buttonPause.SetCaption(null);
@@ -19,6 +19,21 @@ public class MyGameMenu : MonoBehaviour
         buttonPause.Show();
 
         m_Menu.Show();
+    }
+
+    public void Free()
+    {
+        GUIManager.instance.Destroy(m_Menu);
+    }
+
+    public void Show()
+    {
+        m_Menu.Show();
+    }
+
+    public void Hide()
+    {
+        m_Menu.Hide();
     }
 
     private void PauseButton_Click()

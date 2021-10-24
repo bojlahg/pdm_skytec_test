@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GUIManager : MonoBehaviour
 {
-    public GameObject[] m_Prefabs, m_DeactObjects;
+    public Transform m_PrefabRoot;
     public Transform[] m_Layers;
 
     public static GUIManager instance { get { return m_Instance; } }
@@ -19,54 +19,73 @@ public class GUIManager : MonoBehaviour
     {
         m_Instance = this;
 
-        for(int i = 0; i < m_Prefabs.Length; ++i)
+        SearchPrefabsRecursive(m_PrefabRoot);
+
+        m_PrefabRoot.gameObject.SetActive(false);
+    }
+
+    public void SearchPrefabsRecursive(Transform parent)
+    {
+        for(int i = 0; i < parent.childCount; ++i)
         {
-            GUIControl ctl = m_Prefabs[i].GetComponent<GUIControl>();
+            Transform child = parent.GetChild(i);
+
+            GUIControl ctl = child.GetComponent<GUIControl>();
             if (ctl != null)
             {
-                if (!m_PrefabDict.ContainsKey(ctl.GetType().Name))
+                if (!m_PrefabDict.ContainsKey(ctl.gameObject.name))
                 {
-                    m_PrefabDict.Add(ctl.GetType().Name, m_Prefabs[i]);
+                    m_PrefabDict.Add(ctl.gameObject.name, ctl.gameObject);
                 }
                 else
                 {
-                    Debug.LogErrorFormat("GUIManager: Duplicate prefab type name: {0}", ctl.GetType().Name);
+                    Debug.LogErrorFormat("GUIManager: Duplicate prefab name: {0}", ctl.GetType().Name);
                 }
             }
-            m_Prefabs[i].SetActive(false);
-        }
-
-        for (int i = 0; i < m_DeactObjects.Length; ++i)
-        {
-            m_DeactObjects[i].SetActive(false);
+            else
+            {
+                SearchPrefabsRecursive(child);
+            }
         }
     }
 
-    public T Create<T>(int layerIdx) where T: GUIControl
+    public T Create<T>(string n, int layerIdx) where T: GUIControl
     {
-        string typename = typeof(T).Name;
         GameObject prefab;
-        if(m_PrefabDict.TryGetValue(typename, out prefab))
+        if(m_PrefabDict.TryGetValue(n, out prefab))
         {
-            T obj = GameObject.Instantiate(prefab, m_Layers[layerIdx]).GetComponent<T>();
-            obj.Init();
-            return obj;
+            GUIControl ctl = GameObject.Instantiate(prefab, m_Layers[layerIdx]).GetComponent<T>();
+            if(ctl != null && ctl is T)
+            {
+                ctl.Init();
+                return (T)ctl;
+            }
+            else
+            {
+                Debug.LogErrorFormat("Control type mismach: {0} instead of {1}", ctl.GetType().Name, typeof(T).Name);
+            }
         }
-        Debug.LogErrorFormat("Unknown control type name: {0}", typename);
+        Debug.LogErrorFormat("Unknown control name: {0}", n);
         return null;
     }
 
-    public T Create<T>(Transform tfm) where T : GUIControl
+    public T Create<T>(string n, Transform tfm) where T : GUIControl
     {
-        string typename = typeof(T).Name;
         GameObject prefab;
-        if (m_PrefabDict.TryGetValue(typename, out prefab))
+        if (m_PrefabDict.TryGetValue(n, out prefab))
         {
-            T obj = GameObject.Instantiate(prefab, tfm).GetComponent<T>();
-            obj.Init();
-            return obj;
+            GUIControl ctl = GameObject.Instantiate(prefab, tfm).GetComponent<T>();
+            if (ctl != null && ctl is T)
+            {
+                ctl.Init();
+                return (T)ctl;
+            }
+            else
+            {
+                Debug.LogErrorFormat("Control type mismach: {0} instead of {1}", ctl.GetType().Name, typeof(T).Name);
+            }
         }
-        Debug.LogErrorFormat("Unknown control type name: {0}", typename);
+        Debug.LogErrorFormat("Unknown control name: {0}", n);
         return null;
     }
 
