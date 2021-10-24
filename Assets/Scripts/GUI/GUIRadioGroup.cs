@@ -24,7 +24,6 @@ public class GUIRadioGroup : GUIContainer
 
     private void OnValueChanged(int v)
     {
-        Debug.LogFormat("OnValueChanged {0}", v);
         if (onValueChanged != null)
         {
             onValueChanged(this, v);

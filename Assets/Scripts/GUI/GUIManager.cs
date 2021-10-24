@@ -77,7 +77,6 @@ public class GUIManager : MonoBehaviour
 
     public void Push(GUIPanel ctl)
     {
-        Debug.LogFormat("Push {0}", ctl.name);
         GUIPanel top = GetTopPanel();
         if(top != null)
         {
@@ -88,8 +87,6 @@ public class GUIManager : MonoBehaviour
 
     public void Pop()
     {
-        Debug.LogFormat("Pop {0}", m_PanelStack[m_PanelStack.Count - 1].name);
-
         m_PanelStack.RemoveAt(m_PanelStack.Count - 1);
 
         GUIPanel top = GetTopPanel();

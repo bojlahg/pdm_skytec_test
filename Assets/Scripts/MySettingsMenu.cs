@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class MySettingsMenu : MonoBehaviour
 {
-    private GUIMenu m_Menu;
+    private GUIWindowMenu m_Menu;
 
     public void Create()
     {
-        m_Menu = GUIManager.instance.Create<GUIMenu>(0);
+        m_Menu = GUIManager.instance.Create<GUIWindowMenu>(0);
         m_Menu.SetTitle("Настройки");
         m_Menu.onDisappearFinish = GUIManager.instance.Destroy;
         m_Menu.onBackKeyDown = BackButton_Click;

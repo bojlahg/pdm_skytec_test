@@ -68,7 +68,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 157b1928c918caa40a9a7cdf5438eb4f, type: 2}
+  m_Motion: {fileID: 7400000, guid: 824670b01df77374cb9312d85443b5d9, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -126,7 +126,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 38359d9180497a24aa116315384acbef, type: 2}
+  m_Motion: {fileID: 7400000, guid: dfe204e6bccc2544b8229cf26e6ee5cf, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -153,7 +153,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: ff8e43bbc0920eb4b90913bdc1aab0e0, type: 2}
+  m_Motion: {fileID: 7400000, guid: 7cba9bb550d14504b84f5fe427c43352, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -165,7 +165,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Dialog
+  m_Name: ScreenMenu
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Visible
@@ -230,7 +230,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: e0050c47b4d56f046b0c133f156190b0, type: 2}
+  m_Motion: {fileID: 7400000, guid: 0dc3f31d3eb7f2249932d124b557b4c2, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

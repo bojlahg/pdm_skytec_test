@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class MyMainMenu : MonoBehaviour
 {
-    private GUIMenu m_Menu;
+    private GUIWindowMenu m_Menu;
 
     public void Create()
     {
-        m_Menu = GUIManager.instance.Create<GUIMenu>(0);
+        m_Menu = GUIManager.instance.Create<GUIWindowMenu>(0);
         m_Menu.SetTitle("Главное меню");
         m_Menu.onDisappearFinish = GUIManager.instance.Destroy;
         m_Menu.onBackKeyDown = BackButton_Click;
@@ -53,7 +53,7 @@ public class MyMainMenu : MonoBehaviour
     private void SettingsButton_Click()
     {
         m_Menu.Hide();
-        MyApp.instance.m_MySettingsMenu.Create();        
+        MyApp.instance.m_MySettingsMenu.Create();
     }
 
     private void CreditsButton_Click()

@@ -17,6 +17,7 @@ public class MyLoader : MonoBehaviour
 
         m_Loader = GUIManager.instance.Create<GUILoader>(2);
         m_Loader.SetTitle("Загрузка");
+        m_Loader.onAppearFinish = LoaderStarted;
         m_Loader.onDisappearFinish = LoaderFinished;
 
         m_ProgressBar = m_Loader.Create<GUIProgressBar>();
@@ -41,6 +42,11 @@ public class MyLoader : MonoBehaviour
             m_ProgressBar.SetText(m_ProgressTexts[textIndex]);
         }
         m_ProgressBar.SetProgress(v);
+    }
+
+    private void LoaderStarted(GUIControl ctl)
+    {
+        MyApp.instance.StartCoroutine(MyApp.instance.LoadingProgressSimulation());
     }
 
     private void LoaderFinished(GUIControl ctl)

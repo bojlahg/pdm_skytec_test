@@ -8,6 +8,7 @@ public class MyApp : MonoBehaviour
 
     private static MyApp m_Instance;
 
+    public MyGame m_MyGame;
     public MySettings m_MySettings;
     public MyLoader m_MyLoader;
     public MyMainMenu m_MyMainMenu;
@@ -15,6 +16,9 @@ public class MyApp : MonoBehaviour
     public MySettingsMenu m_MySettingsMenu;
     public MyCreditsMenu m_MyCreditsMenu;
     public MyExitDialog m_MyExitDialog;
+    public MyAbortDialog m_MyAbortDialog;
+    public MyGameMenu m_MyGameMenu;
+    public MyPauseMenu m_MyPauseMenu;
 
     private void Awake()
     {
@@ -24,10 +28,9 @@ public class MyApp : MonoBehaviour
     private void Start()
     {
         m_MyLoader.Create();
-        StartCoroutine(LoadingProgressSimulation());
     }
 
-    private IEnumerator LoadingProgressSimulation()
+    public IEnumerator LoadingProgressSimulation()
     {
         float timer = 0, duration = 3.0f;
         

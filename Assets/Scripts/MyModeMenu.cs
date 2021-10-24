@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class MyModeMenu : MonoBehaviour
 {
-    private GUIMenu m_Menu;
+    private GUIWindowMenu m_Menu;
 
     public void Create()
     {
-        m_Menu = GUIManager.instance.Create<GUIMenu>(0);
+        m_Menu = GUIManager.instance.Create<GUIWindowMenu>(0);
         m_Menu.SetTitle("Режим игры");
         m_Menu.onDisappearFinish = GUIManager.instance.Destroy;
         m_Menu.onBackKeyDown = BackButton_Click;
@@ -62,6 +62,9 @@ public class MyModeMenu : MonoBehaviour
     private void PlayButton_Click()
     {
         MyApp.instance.m_MySettings.StoreData();
+        m_Menu.Hide();
+        MyApp.instance.m_MyGameMenu.Create();
+        MyApp.instance.m_MyGame.StartGame(MyApp.instance.m_MySettings.m_GameModeIndex);
     }
 
     private void BackButton_Click()
