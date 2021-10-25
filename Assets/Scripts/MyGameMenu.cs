@@ -11,6 +11,7 @@ public class MyGameMenu : MonoBehaviour, IUserInterface
     public void Create()
     {
         m_Menu = GUIManager.instance.Create<GUIScreenMenu>("ScreenMenu", 0);
+        m_Menu.onBackKeyDown = PauseButton_Click;
 
         GUIButton buttonPause = m_Menu.GetControl<GUIButton>("PauseButton");
         buttonPause.SetCaption(null);

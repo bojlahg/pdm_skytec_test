@@ -79,7 +79,7 @@ public class MyModeMenu : MonoBehaviour, IUserInterface
         MyApp.instance.m_MySettings.StoreData();
         m_Menu.Hide();
         MyApp.instance.m_MyGameMenu.Create();
-        MyApp.instance.m_MyGame.StartGame(MyApp.instance.m_MySettings.m_GameModeIndex);
+        MyApp.instance.m_MyGame.StartGame();
     }
 
     private void BackButton_Click()

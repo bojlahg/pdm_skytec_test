@@ -18,6 +18,7 @@ public class MyApp : MonoBehaviour
     public MyYesNoDialog m_MyYesNoDialog;
     public MyGameMenu m_MyGameMenu;
     public MyPauseMenu m_MyPauseMenu;
+    public MyResultsMenu m_MyResultsMenu;
 
     private void Awake()
     {

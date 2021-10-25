@@ -60,21 +60,21 @@ public class MyYesNoDialog : MonoBehaviour, IUserInterface
 
     private void YesButton_Click()
     {
-        if(onAnswer != null)
+        m_Dialog.Hide();
+        if (onAnswer != null)
         {
             onAnswer.Invoke(0);
         }
         onAnswer = null;
-        m_Dialog.Hide();
     }
 
     private void NoButton_Click()
     {
+        m_Dialog.Hide();
         if (onAnswer != null)
         {
             onAnswer.Invoke(1);
         }
         onAnswer = null;
-        m_Dialog.Hide();
     }
 }

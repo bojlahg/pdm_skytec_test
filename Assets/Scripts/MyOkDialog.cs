@@ -54,10 +54,10 @@ public class MyOkDialog : MonoBehaviour, IUserInterface
 
     private void OkButton_Click()
     {
-        if(onAnswer != null)
+        m_Dialog.Hide();
+        if (onAnswer != null)
         {
             onAnswer.Invoke(0);
         }
-        m_Dialog.Hide();
     }
 }
