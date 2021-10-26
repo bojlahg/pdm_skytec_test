@@ -47,10 +47,18 @@ public class MyGame : MonoBehaviour, IGame
     private bool m_GameStarted = false, m_GamePaused = false;
     private float m_Timer = 0;
 
+    private Settings.Setting<int> m_GameModeIndexSetting, m_ScoreCountSetting;
+
+    private void Start()
+    {
+        m_GameModeIndexSetting = Settings.instance.GetSetting<int>("GameModeIndex");
+        m_ScoreCountSetting = Settings.instance.GetSetting<int>("ScoreCount");
+    }
+
     public void StartGame()
     {
         m_GameStarted = true;
-        m_Size = 3 + MyApp.instance.m_Settings.m_GameModeIndex;
+        m_Size = 3 + m_GameModeIndexSetting.value;
 
         CreateField();
 
@@ -84,18 +92,18 @@ public class MyGame : MonoBehaviour, IGame
 
     private void GameFinished(int winner)
     {
-        MyApp.instance.m_MyResultsMenu.m_ScoreAnimFrom = MyApp.instance.m_Settings.m_ScoreCount;
+        MyApp.instance.m_MyResultsMenu.m_ScoreAnimFrom = m_ScoreCountSetting.value;
         if (winner == 1)
         {
-            MyApp.instance.m_Settings.m_ScoreCount += 100;
+            m_ScoreCountSetting.value += 100;
             SoundManager.instance.PlayOnce("Win");
         }
         else if (winner == 2)
         {
-            MyApp.instance.m_Settings.m_ScoreCount -= 100;
+            m_ScoreCountSetting.value -= 100;
             SoundManager.instance.PlayOnce("Loose");
         }
-        MyApp.instance.m_Settings.StoreData();
+        MyApp.instance.m_Settings.Commit();
         m_GameStarted = false;
 
         DestroyField();
@@ -103,7 +111,7 @@ public class MyGame : MonoBehaviour, IGame
 
         MyApp.instance.m_MyResultsMenu.m_Result = winner;
         
-        MyApp.instance.m_MyResultsMenu.m_ScoreAnimTo = MyApp.instance.m_Settings.m_ScoreCount;
+        MyApp.instance.m_MyResultsMenu.m_ScoreAnimTo = m_ScoreCountSetting.value;
         MyApp.instance.m_MyResultsMenu.Show();
     }
 

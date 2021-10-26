@@ -23,11 +23,18 @@ public class MyApp : MonoBehaviour
     private void Awake()
     {
         m_Instance = this;
+
+        m_Settings.AddSetting<float>("SoundVolume", 1);
+        m_Settings.AddSetting<bool>("MusicEnabled", true);
+        m_Settings.AddSetting<int>("ScoreCount", 0);
+        m_Settings.AddSetting<int>("GameModeIndex", 0);
+        m_Settings.AddSetting<string>("Username", "Username");
+
+        m_Settings.RestoreData();
     }
 
     private void Start()
     {
-        m_Settings.RestoreData();
         m_MyLoader.Show();
     }
 }

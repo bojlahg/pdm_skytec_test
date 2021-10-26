@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class MySettingsMenu : MonoBehaviour, IUserInterface
 {
-    private GUIWindowMenu m_Menu;
-
     public IUserInterface m_ReturnTo;
+
+    private GUIWindowMenu m_Menu;
+    private Settings.Setting<float> m_SoundVolumeSetting;
+    private Settings.Setting<bool> m_MusicEnabledSetting;
+
+    private void Start()
+    {
+        m_SoundVolumeSetting = Settings.instance.GetSetting<float>("SoundVolume");
+        m_MusicEnabledSetting = Settings.instance.GetSetting<bool>("MusicEnabled");
+    }
 
     private void Create()
     {
@@ -17,13 +25,13 @@ public class MySettingsMenu : MonoBehaviour, IUserInterface
 
         GUISlider volumeSlider = m_Menu.Create<GUISlider>("Slider");
         volumeSlider.SetCaption("Громкость");
-        volumeSlider.SetValue(MyApp.instance.m_Settings.m_SoundVolume);
+        volumeSlider.SetValue(m_SoundVolumeSetting.value);
         volumeSlider.onValueChanged = VolumeSlider_ValueChanged;
         volumeSlider.Show();
 
         GUIToggle musicToggle = m_Menu.Create<GUIToggle>("Toggle");
         musicToggle.SetCaption("Музыка");
-        musicToggle.SetCheckState(MyApp.instance.m_Settings.m_MusicEnabled);
+        musicToggle.SetCheckState(m_MusicEnabledSetting.value);
         musicToggle.onValueChanged = MusicToggle_ValueChanged;
         musicToggle.Show();
 
@@ -54,21 +62,21 @@ public class MySettingsMenu : MonoBehaviour, IUserInterface
 
     private void VolumeSlider_ValueChanged(GUIControl ctl, float v)
     {
-        MyApp.instance.m_Settings.m_SoundVolume = v;
+        m_SoundVolumeSetting.value = v;
     }
 
     private void MusicToggle_ValueChanged(GUIControl ctl, bool c)
     {
         SoundManager.instance.PlayOnce("ButtonClick");
 
-        MyApp.instance.m_Settings.m_MusicEnabled = c;
+        m_MusicEnabledSetting.value = c;
     }
 
     private void BackButton_Click()
     {
         SoundManager.instance.PlayOnce("ButtonClick");
 
-        MyApp.instance.m_Settings.StoreData();
+        MyApp.instance.m_Settings.Commit();
         m_Menu.Hide();
         m_ReturnTo.Show();
     }

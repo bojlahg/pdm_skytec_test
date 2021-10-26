@@ -5,6 +5,14 @@ using UnityEngine;
 public class MyMainMenu : MonoBehaviour, IUserInterface
 {
     private GUIWindowMenu m_Menu;
+    private Settings.Setting<string> m_UsernameSetting;
+    private Settings.Setting<int> m_ScoreCountSetting;
+
+    private void Start()
+    {
+        m_UsernameSetting = Settings.instance.GetSetting<string>("Username");
+        m_ScoreCountSetting = Settings.instance.GetSetting<int>("ScoreCount");
+    }
 
     private void Create()
     {
@@ -14,11 +22,11 @@ public class MyMainMenu : MonoBehaviour, IUserInterface
         m_Menu.onBackKeyDown = BackButton_Click;
 
         GUIText usernameText = m_Menu.Create<GUIText>("Text");
-        usernameText.SetText(string.Format("Игрок: {0}", MyApp.instance.m_Settings.m_Username));
+        usernameText.SetText(string.Format("Игрок: {0}", m_UsernameSetting.value));
         usernameText.Show();
 
         GUIText scoreText = m_Menu.Create<GUIText>("Text");
-        scoreText.SetText(string.Format("Количество очков: {0}", MyApp.instance.m_Settings.m_ScoreCount));
+        scoreText.SetText(string.Format("Количество очков: {0}", m_ScoreCountSetting.value));
         scoreText.Show();
 
         GUIButton buttonPlay = m_Menu.Create<GUIButton>("Button");

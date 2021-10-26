@@ -26,9 +26,12 @@ public class SoundManager : MonoBehaviour
     private List<AudioSource> m_PlayedSounds = new List<AudioSource>();
     private Dictionary<string, AudioSource> m_PlayedLoopSounds = new Dictionary<string, AudioSource>();
 
+    private Settings.Setting<float> m_SoundVolumeSetting;
+
     private void Awake()
     {
         m_Instance = this;
+
         for (int i = 0; i < m_Sounds.Length; ++i)
         {
             if(!m_SoundsDict.ContainsKey(m_Sounds[i].m_Name))
@@ -42,9 +45,19 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void SetSoundVolume(float p)
+    private void Start()
     {
-        //m_AudioMixerGroup.
+        m_SoundVolumeSetting = Settings.instance.GetSetting<float>("SoundVolume");
+        Settings.instance.onSettingsChanged += SettingChanged;
+
+        SettingChanged();
+    }
+
+    public void SettingChanged()
+    {
+        float logvol = Mathf.Log10(0.0001f + 0.9999f * m_SoundVolumeSetting.value) * 20.0f;
+
+        m_AudioMixerGroup.audioMixer.SetFloat("SoundVolume", logvol);
     }
 
     public void PlayOnce(string n)
@@ -113,8 +126,9 @@ public class SoundManager : MonoBehaviour
 
         audsrc.clip = snd.m_Variants.GetRandom<AudioClip>();
         audsrc.loop = loop;
+        audsrc.outputAudioMixerGroup = m_AudioMixerGroup;
 
-        if(loop)
+        if (loop)
         {
             m_PlayedLoopSounds.Add(snd.m_Name, audsrc);
         }

@@ -1650,22 +1650,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb918a48f139d8947a7527882437d9d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MusicEnabled: 1
-  m_SoundVolume: 1
-  m_ScoreCount: 0
-  m_GameModeIndex: 0
-  m_Username: Username
   m_Settings:
   - m_Name: Username
-    m_SettingType: 0
+    m_SettingType: 1
+    m_Default: {fileID: 0}
   - m_Name: SoundVolume
     m_SettingType: 3
+    m_Default: {fileID: 0}
   - m_Name: GameModeIndex
     m_SettingType: 2
+    m_Default: {fileID: 0}
   - m_Name: ScoreCount
     m_SettingType: 2
+    m_Default: {fileID: 0}
   - m_Name: MusicEnabled
     m_SettingType: 1
+    m_Default: {fileID: 0}
 --- !u!1 &363832850
 GameObject:
   m_ObjectHideFlags: 0
@@ -4891,7 +4891,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee231be2b8345ac4399055288933b358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AudioMixerGroup: {fileID: 0}
+  m_AudioMixerGroup: {fileID: -6440496645087436185, guid: 003fd415304d9eb41a9295420b1f34be,
+    type: 2}
   m_Sounds:
   - m_Name: Score
     m_Variants:

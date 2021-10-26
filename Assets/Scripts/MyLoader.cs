@@ -17,8 +17,7 @@ public class MyLoader : MonoBehaviour, IUserInterface
         m_Loader = GUIManager.instance.Create<GUILoader>("Loader", 2);
         m_Loader.SetTitle("Загрузка");
         m_Loader.onAppearFinish = LoaderStarted;
-        m_Loader.onDisappearFinish += LoaderFinished;
-        m_Loader.onDisappearFinish += GUIManager.instance.Destroy;
+        m_Loader.onDisappearFinish = GUIManager.instance.Destroy;
 
         m_ProgressBar = m_Loader.Create<GUIProgressBar>("ProgressBar");
         m_ProgressBar.SetProgress(0);
@@ -58,11 +57,6 @@ public class MyLoader : MonoBehaviour, IUserInterface
         StartCoroutine(LoadingProgressSimulation());
     }
 
-    private void LoaderFinished(GUIControl ctl)
-    {
-        MyApp.instance.m_MyMainMenu.Show();
-    }
-
     public IEnumerator LoadingProgressSimulation()
     {
         float timer = 0, duration = 3.0f;
@@ -73,6 +67,11 @@ public class MyLoader : MonoBehaviour, IUserInterface
             yield return null;
             timer += Time.deltaTime;
         }
-        Hide();
+
+        m_Loader.Hide();
+
+        yield return new WaitForSeconds(0.5f); // Задержка для красивости
+
+        MyApp.instance.m_MyMainMenu.Show();
     }
 }

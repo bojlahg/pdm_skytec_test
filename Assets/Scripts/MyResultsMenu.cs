@@ -10,8 +10,13 @@ public class MyResultsMenu : MonoBehaviour, IUserInterface
 
     private GUIWindowMenu m_Menu;
     private GUIText m_ScoreText;
-
     private bool m_Animation = false;
+    private Settings.Setting<string> m_UsernameSetting;
+
+    private void Start()
+    {
+        m_UsernameSetting = Settings.instance.GetSetting<string>("Username");
+    }
 
     private void Create()
     {
@@ -27,7 +32,7 @@ public class MyResultsMenu : MonoBehaviour, IUserInterface
         resultText.Show();
 
         GUIText usernameText = m_Menu.Create<GUIText>("Text");
-        usernameText.SetText(string.Format("Игрок: {0}", MyApp.instance.m_Settings.m_Username));
+        usernameText.SetText(string.Format("Игрок: {0}", m_UsernameSetting.value));
         usernameText.Show();
 
         m_ScoreText = m_Menu.Create<GUIText>("Text");
@@ -69,12 +74,12 @@ public class MyResultsMenu : MonoBehaviour, IUserInterface
         m_Animation = true;
         int score = m_ScoreAnimFrom;
         int delta = 1;
-        if(m_ScoreAnimTo < m_ScoreAnimFrom)
+        if(m_ScoreAnimTo - m_ScoreAnimFrom < 0)
         {
             delta = -1;
         }
         SoundManager.instance.PlayLooped("Score");
-        while (score < m_ScoreAnimTo)
+        while (score != m_ScoreAnimTo)
         {
             yield return null;
             m_ScoreText.SetText(string.Format("Количество очков: {0}", score));
