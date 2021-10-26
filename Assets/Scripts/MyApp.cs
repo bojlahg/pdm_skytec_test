@@ -8,8 +8,8 @@ public class MyApp : MonoBehaviour
 
     private static MyApp m_Instance;
 
+    public Settings m_Settings;
     public MyGame m_MyGame;
-    public MySettings m_MySettings;
     public MyLoader m_MyLoader;
     public MyMainMenu m_MyMainMenu;
     public MyModeMenu m_MyModeMenu;
@@ -27,6 +27,7 @@ public class MyApp : MonoBehaviour
 
     private void Start()
     {
+        m_Settings.RestoreData();
         m_MyLoader.Show();
     }
 }

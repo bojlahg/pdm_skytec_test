@@ -15,7 +15,7 @@ public class MyModeMenu : MonoBehaviour, IUserInterface
 
         GUIInputField userInput = m_Menu.Create<GUIInputField>("InputField");
         userInput.SetCaption("Ваше имя");
-        userInput.SetText(MyApp.instance.m_MySettings.m_Username);
+        userInput.SetText(MyApp.instance.m_Settings.m_Username);
         userInput.SetHintText("Введите имя...");
         userInput.onValueChanged = UsernameInput_ValueChanged;
         userInput.Show();
@@ -31,7 +31,7 @@ public class MyModeMenu : MonoBehaviour, IUserInterface
             //rdos[i].SetCheckState(i == MyApp.instance.m_MySettings.m_GameModeIndex);
             rdos[i].Show();
         }
-        rgrp.SetRadioIndex(MyApp.instance.m_MySettings.m_GameModeIndex);
+        rgrp.SetRadioIndex(MyApp.instance.m_Settings.m_GameModeIndex);
         rgrp.Show();
 
         GUIButton playButton = m_Menu.Create<GUIButton>("Button");
@@ -67,17 +67,21 @@ public class MyModeMenu : MonoBehaviour, IUserInterface
 
     private void UsernameInput_ValueChanged(GUIControl ctl, string v)
     {
-        MyApp.instance.m_MySettings.m_Username = v;
+        MyApp.instance.m_Settings.m_Username = v;
     }
 
     private void GameModeRadioGroup_ValueChanged(GUIControl ctl, int v)
     {
-        MyApp.instance.m_MySettings.m_GameModeIndex = v;
+        SoundManager.instance.PlayOnce("ButtonClick");
+
+        MyApp.instance.m_Settings.m_GameModeIndex = v;
     }
 
     private void PlayButton_Click()
     {
-        MyApp.instance.m_MySettings.StoreData();
+        SoundManager.instance.PlayOnce("ButtonClick");
+
+        MyApp.instance.m_Settings.StoreData();
         m_Menu.Hide();
         MyApp.instance.m_MyGameMenu.Show();
         MyApp.instance.m_MyGame.StartGame();
@@ -85,7 +89,9 @@ public class MyModeMenu : MonoBehaviour, IUserInterface
 
     private void BackButton_Click()
     {
-        MyApp.instance.m_MySettings.StoreData();
+        SoundManager.instance.PlayOnce("ButtonClick");
+
+        MyApp.instance.m_Settings.StoreData();
         m_Menu.Hide();
         MyApp.instance.m_MyMainMenu.Show();
     }

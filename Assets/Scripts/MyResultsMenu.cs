@@ -11,6 +11,8 @@ public class MyResultsMenu : MonoBehaviour, IUserInterface
     private GUIWindowMenu m_Menu;
     private GUIText m_ScoreText;
 
+    private bool m_Animation = false;
+
     private void Create()
     {
         m_Menu = GUIManager.instance.Create<GUIWindowMenu>("WindowMenu", 0);
@@ -25,7 +27,7 @@ public class MyResultsMenu : MonoBehaviour, IUserInterface
         resultText.Show();
 
         GUIText usernameText = m_Menu.Create<GUIText>("Text");
-        usernameText.SetText(string.Format("Игрок: {0}", MyApp.instance.m_MySettings.m_Username));
+        usernameText.SetText(string.Format("Игрок: {0}", MyApp.instance.m_Settings.m_Username));
         usernameText.Show();
 
         m_ScoreText = m_Menu.Create<GUIText>("Text");
@@ -64,24 +66,33 @@ public class MyResultsMenu : MonoBehaviour, IUserInterface
 
     private IEnumerator AnimScore()
     {
+        m_Animation = true;
         int score = m_ScoreAnimFrom;
         int delta = 1;
         if(m_ScoreAnimTo < m_ScoreAnimFrom)
         {
             delta = -1;
         }
+        SoundManager.instance.PlayLooped("Score");
         while (score < m_ScoreAnimTo)
         {
             yield return null;
             m_ScoreText.SetText(string.Format("Количество очков: {0}", score));
             score += delta;
         }
+        SoundManager.instance.StopLooped("Score");
         m_ScoreText.SetText(string.Format("Количество очков: {0}", m_ScoreAnimTo));
+        m_Animation = false;
     }
 
     private void OkButton_Click()
     {
-        m_Menu.Hide();
-        MyApp.instance.m_MyMainMenu.Show();
+        if (!m_Animation)
+        {
+            SoundManager.instance.PlayOnce("ButtonClick");
+
+            m_Menu.Hide();
+            MyApp.instance.m_MyMainMenu.Show();
+        }
     }
 }

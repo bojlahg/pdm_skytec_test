@@ -17,13 +17,13 @@ public class MySettingsMenu : MonoBehaviour, IUserInterface
 
         GUISlider volumeSlider = m_Menu.Create<GUISlider>("Slider");
         volumeSlider.SetCaption("Громкость");
-        volumeSlider.SetValue(MyApp.instance.m_MySettings.m_Volume);
+        volumeSlider.SetValue(MyApp.instance.m_Settings.m_SoundVolume);
         volumeSlider.onValueChanged = VolumeSlider_ValueChanged;
         volumeSlider.Show();
 
         GUIToggle musicToggle = m_Menu.Create<GUIToggle>("Toggle");
         musicToggle.SetCaption("Музыка");
-        musicToggle.SetCheckState(MyApp.instance.m_MySettings.m_MusicEnabled);
+        musicToggle.SetCheckState(MyApp.instance.m_Settings.m_MusicEnabled);
         musicToggle.onValueChanged = MusicToggle_ValueChanged;
         musicToggle.Show();
 
@@ -54,17 +54,21 @@ public class MySettingsMenu : MonoBehaviour, IUserInterface
 
     private void VolumeSlider_ValueChanged(GUIControl ctl, float v)
     {
-        MyApp.instance.m_MySettings.m_Volume = v;
+        MyApp.instance.m_Settings.m_SoundVolume = v;
     }
 
     private void MusicToggle_ValueChanged(GUIControl ctl, bool c)
     {
-        MyApp.instance.m_MySettings.m_MusicEnabled = c;
+        SoundManager.instance.PlayOnce("ButtonClick");
+
+        MyApp.instance.m_Settings.m_MusicEnabled = c;
     }
 
     private void BackButton_Click()
     {
-        MyApp.instance.m_MySettings.StoreData();
+        SoundManager.instance.PlayOnce("ButtonClick");
+
+        MyApp.instance.m_Settings.StoreData();
         m_Menu.Hide();
         m_ReturnTo.Show();
     }

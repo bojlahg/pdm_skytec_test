@@ -45,6 +45,8 @@ public class MyGameMenu : MonoBehaviour, IUserInterface
 
     private void PauseButton_Click()
     {
+        SoundManager.instance.PlayOnce("ButtonClick");
+
         m_Menu.Hide();
         MyApp.instance.m_MyGame.PauseGame();
         MyApp.instance.m_MyPauseMenu.Show();

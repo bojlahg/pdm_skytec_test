@@ -55,6 +55,8 @@ public class MyOkDialog : MonoBehaviour, IUserInterface
 
     private void OkButton_Click()
     {
+        SoundManager.instance.PlayOnce("ButtonClick");
+
         m_Dialog.Hide();
         if (onAnswer != null)
         {

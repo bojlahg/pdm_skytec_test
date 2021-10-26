@@ -44,6 +44,8 @@ public class MyCreditsMenu : MonoBehaviour, IUserInterface
 
     private void BackButton_Click()
     {
+        SoundManager.instance.PlayOnce("ButtonClick");
+
         m_Menu.Hide();
         MyApp.instance.m_MyMainMenu.Show();
     }

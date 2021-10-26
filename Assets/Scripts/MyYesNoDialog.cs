@@ -61,6 +61,8 @@ public class MyYesNoDialog : MonoBehaviour, IUserInterface
 
     private void YesButton_Click()
     {
+        SoundManager.instance.PlayOnce("ButtonClick");
+
         m_Dialog.Hide();
         if (onAnswer != null)
         {
@@ -71,6 +73,8 @@ public class MyYesNoDialog : MonoBehaviour, IUserInterface
 
     private void NoButton_Click()
     {
+        SoundManager.instance.PlayOnce("ButtonClick");
+
         m_Dialog.Hide();
         if (onAnswer != null)
         {

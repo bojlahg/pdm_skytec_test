@@ -14,11 +14,11 @@ public class MyMainMenu : MonoBehaviour, IUserInterface
         m_Menu.onBackKeyDown = BackButton_Click;
 
         GUIText usernameText = m_Menu.Create<GUIText>("Text");
-        usernameText.SetText(string.Format("Игрок: {0}", MyApp.instance.m_MySettings.m_Username));
+        usernameText.SetText(string.Format("Игрок: {0}", MyApp.instance.m_Settings.m_Username));
         usernameText.Show();
 
         GUIText scoreText = m_Menu.Create<GUIText>("Text");
-        scoreText.SetText(string.Format("Количество очков: {0}", MyApp.instance.m_MySettings.m_ScoreCount));
+        scoreText.SetText(string.Format("Количество очков: {0}", MyApp.instance.m_Settings.m_ScoreCount));
         scoreText.Show();
 
         GUIButton buttonPlay = m_Menu.Create<GUIButton>("Button");
@@ -66,12 +66,16 @@ public class MyMainMenu : MonoBehaviour, IUserInterface
 
     private void PlayButton_Click()
     {
+        SoundManager.instance.PlayOnce("ButtonClick");
+
         m_Menu.Hide();
         MyApp.instance.m_MyModeMenu.Show();
     }
 
     private void SettingsButton_Click()
     {
+        SoundManager.instance.PlayOnce("ButtonClick");
+
         m_Menu.Hide();
         MyApp.instance.m_MySettingsMenu.Show();
         MyApp.instance.m_MySettingsMenu.m_ReturnTo = this;
@@ -79,12 +83,16 @@ public class MyMainMenu : MonoBehaviour, IUserInterface
 
     private void CreditsButton_Click()
     {
+        SoundManager.instance.PlayOnce("ButtonClick");
+
         m_Menu.Hide();
         MyApp.instance.m_MyCreditsMenu.Show();        
     }
 
     private void BackButton_Click()
     {
+        SoundManager.instance.PlayOnce("ButtonClick");
+
         MyApp.instance.m_MyYesNoDialog.Show();
         MyApp.instance.m_MyYesNoDialog.SetTitle("Ой-Ой!");
         MyApp.instance.m_MyYesNoDialog.SetMessage("Вы точно хотите выйти из игры?");

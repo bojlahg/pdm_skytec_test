@@ -50,7 +50,7 @@ public class MyGame : MonoBehaviour, IGame
     public void StartGame()
     {
         m_GameStarted = true;
-        m_Size = 3 + MyApp.instance.m_MySettings.m_GameModeIndex;
+        m_Size = 3 + MyApp.instance.m_Settings.m_GameModeIndex;
 
         CreateField();
 
@@ -84,16 +84,18 @@ public class MyGame : MonoBehaviour, IGame
 
     private void GameFinished(int winner)
     {
-        MyApp.instance.m_MyResultsMenu.m_ScoreAnimFrom = MyApp.instance.m_MySettings.m_ScoreCount;
+        MyApp.instance.m_MyResultsMenu.m_ScoreAnimFrom = MyApp.instance.m_Settings.m_ScoreCount;
         if (winner == 1)
         {
-            MyApp.instance.m_MySettings.m_ScoreCount += 100;
+            MyApp.instance.m_Settings.m_ScoreCount += 100;
+            SoundManager.instance.PlayOnce("Win");
         }
         else if (winner == 2)
         {
-            MyApp.instance.m_MySettings.m_ScoreCount -= 100;
+            MyApp.instance.m_Settings.m_ScoreCount -= 100;
+            SoundManager.instance.PlayOnce("Loose");
         }
-        MyApp.instance.m_MySettings.StoreData();
+        MyApp.instance.m_Settings.StoreData();
         m_GameStarted = false;
 
         DestroyField();
@@ -101,7 +103,7 @@ public class MyGame : MonoBehaviour, IGame
 
         MyApp.instance.m_MyResultsMenu.m_Result = winner;
         
-        MyApp.instance.m_MyResultsMenu.m_ScoreAnimTo = MyApp.instance.m_MySettings.m_ScoreCount;
+        MyApp.instance.m_MyResultsMenu.m_ScoreAnimTo = MyApp.instance.m_Settings.m_ScoreCount;
         MyApp.instance.m_MyResultsMenu.Show();
     }
 
@@ -173,6 +175,7 @@ public class MyGame : MonoBehaviour, IGame
         }
         m_Turn = 0; // блокировка
 
+        SoundManager.instance.PlayOnce("Move");
         float timer = 0;
         while (timer < 0.5f)
         {
@@ -184,7 +187,6 @@ public class MyGame : MonoBehaviour, IGame
         go.transform.localScale = Vector3.one;
 
         m_Turn = nextturn;
-
 
         ++m_TurnsMade;
 
@@ -425,7 +427,7 @@ public class MyGame : MonoBehaviour, IGame
             }
         }
 
-        if (winner == 0 && m_TurnsMade == m_Size * m_Size)
+        if (winner == 3 && m_TurnsMade == m_Size * m_Size)
         {
             winner = 0;
         }

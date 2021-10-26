@@ -52,6 +52,8 @@ public class MyPauseMenu : MonoBehaviour, IUserInterface
 
     private void SettingsButton_Click()
     {
+        SoundManager.instance.PlayOnce("ButtonClick");
+
         m_Menu.Hide();
         MyApp.instance.m_MySettingsMenu.Show();
         MyApp.instance.m_MySettingsMenu.m_ReturnTo = this;
@@ -59,6 +61,8 @@ public class MyPauseMenu : MonoBehaviour, IUserInterface
 
     private void HomeButton_Click()
     {
+        SoundManager.instance.PlayOnce("ButtonClick");
+
         MyApp.instance.m_MyYesNoDialog.Show();
         MyApp.instance.m_MyYesNoDialog.SetTitle("Покинуть игру?");
         MyApp.instance.m_MyYesNoDialog.SetMessage("Вы точно хотите прервать неоконченную игру?");
@@ -77,7 +81,9 @@ public class MyPauseMenu : MonoBehaviour, IUserInterface
 
     private void ResumeButton_Click()
     {
-        Hide();
+        SoundManager.instance.PlayOnce("ButtonClick");
+
+        m_Menu.Hide();
         MyApp.instance.m_MyGameMenu.Show();
         MyApp.instance.m_MyGame.UnpauseGame();
     }
