@@ -6,7 +6,7 @@ public class MyCreditsMenu : MonoBehaviour, IUserInterface
 {
     private GUIWindowMenu m_Menu;
 
-    public void Create()
+    private void Create()
     {
         m_Menu = GUIManager.instance.Create<GUIWindowMenu>("WindowMenu", 0);
         m_Menu.SetTitle("О Игре");
@@ -26,13 +26,14 @@ public class MyCreditsMenu : MonoBehaviour, IUserInterface
         m_Menu.Show();
     }
 
-    public void Free()
+    private void Free()
     {
         GUIManager.instance.Destroy(m_Menu);
     }
 
     public void Show()
     {
+        Create();
         m_Menu.Show();
     }
 
@@ -44,6 +45,6 @@ public class MyCreditsMenu : MonoBehaviour, IUserInterface
     private void BackButton_Click()
     {
         m_Menu.Hide();
-        MyApp.instance.m_MyMainMenu.Create();
+        MyApp.instance.m_MyMainMenu.Show();
     }
 }

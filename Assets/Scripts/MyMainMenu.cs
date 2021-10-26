@@ -6,16 +6,20 @@ public class MyMainMenu : MonoBehaviour, IUserInterface
 {
     private GUIWindowMenu m_Menu;
 
-    public void Create()
+    private void Create()
     {
         m_Menu = GUIManager.instance.Create<GUIWindowMenu>("WindowMenu", 0);
         m_Menu.SetTitle("Главное меню");
         m_Menu.onDisappearFinish = GUIManager.instance.Destroy;
         m_Menu.onBackKeyDown = BackButton_Click;
 
-        GUIText winsText = m_Menu.Create<GUIText>("Text");
-        winsText.SetText(string.Format("Количество побед: {0}\nКоличество поражений: {1}", MyApp.instance.m_MySettings.m_WinCount, MyApp.instance.m_MySettings.m_LossCount));
-        winsText.Show();
+        GUIText usernameText = m_Menu.Create<GUIText>("Text");
+        usernameText.SetText(string.Format("Игрок: {0}", MyApp.instance.m_MySettings.m_Username));
+        usernameText.Show();
+
+        GUIText scoreText = m_Menu.Create<GUIText>("Text");
+        scoreText.SetText(string.Format("Количество очков: {0}", MyApp.instance.m_MySettings.m_ScoreCount));
+        scoreText.Show();
 
         GUIButton buttonPlay = m_Menu.Create<GUIButton>("Button");
         buttonPlay.SetCaption("Играть");
@@ -44,13 +48,14 @@ public class MyMainMenu : MonoBehaviour, IUserInterface
         m_Menu.Show();
     }
 
-    public void Free()
+    private void Free()
     {
         GUIManager.instance.Destroy(m_Menu);
     }
 
     public void Show()
     {
+        Create();
         m_Menu.Show();
     }
 
@@ -62,25 +67,25 @@ public class MyMainMenu : MonoBehaviour, IUserInterface
     private void PlayButton_Click()
     {
         m_Menu.Hide();
-        MyApp.instance.m_MyModeMenu.Create();
+        MyApp.instance.m_MyModeMenu.Show();
     }
 
     private void SettingsButton_Click()
     {
         m_Menu.Hide();
-        MyApp.instance.m_MySettingsMenu.Create();
+        MyApp.instance.m_MySettingsMenu.Show();
         MyApp.instance.m_MySettingsMenu.m_ReturnTo = this;
     }
 
     private void CreditsButton_Click()
     {
         m_Menu.Hide();
-        MyApp.instance.m_MyCreditsMenu.Create();        
+        MyApp.instance.m_MyCreditsMenu.Show();        
     }
 
     private void BackButton_Click()
     {
-        MyApp.instance.m_MyYesNoDialog.Create();
+        MyApp.instance.m_MyYesNoDialog.Show();
         MyApp.instance.m_MyYesNoDialog.SetTitle("Ой-Ой!");
         MyApp.instance.m_MyYesNoDialog.SetMessage("Вы точно хотите выйти из игры?");
         MyApp.instance.m_MyYesNoDialog.onAnswer = QuitDialogAnswer;

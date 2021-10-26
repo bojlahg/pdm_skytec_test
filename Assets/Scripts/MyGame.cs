@@ -16,7 +16,7 @@ public class MyGame : MonoBehaviour, IGame
         {
             get
             {
-                if(x >= 0 && x < m_Size && y >= 0 && y < m_Size)
+                if (x >= 0 && x < m_Size && y >= 0 && y < m_Size)
                 {
                     return m_Map[x, y];
                 }
@@ -45,6 +45,7 @@ public class MyGame : MonoBehaviour, IGame
     private Map m_Map;
     private int m_Size = 0, m_Turn = 0, m_TurnsMade = 0;
     private bool m_GameStarted = false, m_GamePaused = false;
+    private float m_Timer = 0;
 
     public void StartGame()
     {
@@ -53,6 +54,7 @@ public class MyGame : MonoBehaviour, IGame
 
         CreateField();
 
+        m_Timer = 0;
         m_TurnsMade = 0;
         m_Turn = Random.Range(1, 3);
         if (m_Turn == 2)
@@ -82,20 +84,25 @@ public class MyGame : MonoBehaviour, IGame
 
     private void GameFinished(int winner)
     {
-        if(winner == 1)
+        MyApp.instance.m_MyResultsMenu.m_ScoreAnimFrom = MyApp.instance.m_MySettings.m_ScoreCount;
+        if (winner == 1)
         {
-            ++MyApp.instance.m_MySettings.m_WinCount;
+            MyApp.instance.m_MySettings.m_ScoreCount += 100;
         }
         else if (winner == 2)
         {
-            ++MyApp.instance.m_MySettings.m_LossCount;
+            MyApp.instance.m_MySettings.m_ScoreCount -= 100;
         }
         MyApp.instance.m_MySettings.StoreData();
         m_GameStarted = false;
 
         DestroyField();
         MyApp.instance.m_MyGameMenu.Hide();
-        MyApp.instance.m_MyResultsMenu.Create();
+
+        MyApp.instance.m_MyResultsMenu.m_Result = winner;
+        
+        MyApp.instance.m_MyResultsMenu.m_ScoreAnimTo = MyApp.instance.m_MySettings.m_ScoreCount;
+        MyApp.instance.m_MyResultsMenu.Show();
     }
 
     private Vector2 FromIntCoord(Vector2Int pos)
@@ -145,9 +152,9 @@ public class MyGame : MonoBehaviour, IGame
     private void MadeMove(Vector2Int pos, int p)
     {
         GameObject newgo;
-        if(p == 1)
+        if (p == 1)
         {
-             newgo = GameObject.Instantiate(m_XPrefab, FromIntCoord(pos), Quaternion.identity, transform);
+            newgo = GameObject.Instantiate(m_XPrefab, FromIntCoord(pos), Quaternion.identity, transform);
         }
         else
         {
@@ -159,8 +166,15 @@ public class MyGame : MonoBehaviour, IGame
 
     private IEnumerator AnimateMove(GameObject go)
     {
+        int nextturn = m_Turn + 1;
+        if (nextturn == 3)
+        {
+            nextturn = 1;
+        }
+        m_Turn = 0; // блокировка
+
         float timer = 0;
-        while(timer < 0.5f)
+        while (timer < 0.5f)
         {
             float t = timer * 2;
             go.transform.localScale = Vector3.one * EaseOutBack(t);
@@ -168,6 +182,11 @@ public class MyGame : MonoBehaviour, IGame
             timer += Time.deltaTime;
         }
         go.transform.localScale = Vector3.one;
+
+        m_Turn = nextturn;
+
+
+        ++m_TurnsMade;
 
         CheckWinner();
     }
@@ -338,15 +357,12 @@ public class MyGame : MonoBehaviour, IGame
         m_Map[pos.x, pos.y] = m_Turn;
 
         MadeMove(pos, 2);
-
-        m_Turn = 1;
-        ++m_TurnsMade;
     }
 
     private void CheckWinner()
     {
-        // 0 - не закончена, 1 - пользователь, 2 - компьютер, 3 - ничья
-        int winner = 0;
+        // 0 - ничья, 1 - пользователь, 2 - компьютер, 3 - не закончена
+        int winner = 3;
         for (int p = 1; p < 3; ++p)
         {
             for (int y = 0; y < m_Size; ++y)
@@ -409,12 +425,12 @@ public class MyGame : MonoBehaviour, IGame
             }
         }
 
-        if(winner == 0 && m_TurnsMade == m_Size * m_Size)
+        if (winner == 0 && m_TurnsMade == m_Size * m_Size)
         {
-            winner = 3;
+            winner = 0;
         }
 
-        if(winner != 0)
+        if (winner != 3)
         {
             GameFinished(winner);
         }
@@ -429,33 +445,33 @@ public class MyGame : MonoBehaviour, IGame
 
     private void Update()
     {
-        if(m_GameStarted && !m_GamePaused)
+        if (m_GameStarted && !m_GamePaused)
         {
-            if(Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0))
             {
                 Click(m_Camera.ScreenToWorldPoint(Input.mousePosition));
             }
 
-            if(Input.touchCount == 1 && Input.touches[0].phase == TouchPhase.Began)
+            if (Input.touchCount == 1 && Input.touches[0].phase == TouchPhase.Began)
             {
                 Click(m_Camera.ScreenToWorldPoint(Input.touches[0].position));
             }
+
+            m_Timer += Time.unscaledDeltaTime;
+            MyApp.instance.m_MyGameMenu.SetTimer(m_Timer);
         }
     }
 
     private void Click(Vector2 pos)
     {
-
         Vector2Int posi = ToIntCoord(pos);
 
-        if (posi.x >= 0 && posi.x < m_Size && posi.y >= 0 && posi.y < m_Size)
+        if (posi.x >= 0 && posi.x < m_Size && posi.y >= 0 && posi.y < m_Size && m_Turn == 1)
         {
             if (m_Map[posi.x, posi.y] == 0)
             {
                 m_Map[posi.x, posi.y] = m_Turn;
                 MadeMove(posi, 1);
-                m_Turn = 2;
-                ++m_TurnsMade;
             }
         }
     }

@@ -6,7 +6,7 @@ public class MyPauseMenu : MonoBehaviour, IUserInterface
 {
     private GUIWindowMenu m_Menu;
 
-    public void Create()
+    private void Create()
     {
         m_Menu = GUIManager.instance.Create<GUIWindowMenu>("WindowMenu", 0);
         m_Menu.SetTitle("Пауза");
@@ -34,13 +34,14 @@ public class MyPauseMenu : MonoBehaviour, IUserInterface
         m_Menu.Show();
     }
 
-    public void Free()
+    private void Free()
     {
         GUIManager.instance.Destroy(m_Menu);
     }
 
     public void Show()
     {
+        Create();
         m_Menu.Show();
     }
 
@@ -52,13 +53,13 @@ public class MyPauseMenu : MonoBehaviour, IUserInterface
     private void SettingsButton_Click()
     {
         m_Menu.Hide();
-        MyApp.instance.m_MySettingsMenu.Create();
+        MyApp.instance.m_MySettingsMenu.Show();
         MyApp.instance.m_MySettingsMenu.m_ReturnTo = this;
     }
 
     private void HomeButton_Click()
     {
-        MyApp.instance.m_MyYesNoDialog.Create();
+        MyApp.instance.m_MyYesNoDialog.Show();
         MyApp.instance.m_MyYesNoDialog.SetTitle("Покинуть игру?");
         MyApp.instance.m_MyYesNoDialog.SetMessage("Вы точно хотите прервать неоконченную игру?");
         MyApp.instance.m_MyYesNoDialog.onAnswer = AbortDialogAnswer;
@@ -69,12 +70,15 @@ public class MyPauseMenu : MonoBehaviour, IUserInterface
         if (aidx == 0)
         {
             m_Menu.Hide();
-            MyApp.instance.m_MyMainMenu.Create();
+            MyApp.instance.m_MyMainMenu.Show();
             MyApp.instance.m_MyGame.AbortGame();
         }
     }
 
     private void ResumeButton_Click()
     {
+        Hide();
+        MyApp.instance.m_MyGameMenu.Show();
+        MyApp.instance.m_MyGame.UnpauseGame();
     }
 }

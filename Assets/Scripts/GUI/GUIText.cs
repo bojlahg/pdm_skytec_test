@@ -17,4 +17,9 @@ public class GUIText : GUIControl
     {
         m_Text.text = t;
     }
+
+    public void SetColor(Color c)
+    {
+        m_Text.color = c;
+    }
 }

@@ -11,7 +11,7 @@ public class MyOkDialog : MonoBehaviour, IUserInterface
 
     private GUIDialog m_Dialog;
 
-    public void Create()
+    private void Create()
     {
         m_Dialog = GUIManager.instance.Create<GUIDialog>("Dialog", 1);
        
@@ -27,13 +27,14 @@ public class MyOkDialog : MonoBehaviour, IUserInterface
         m_Dialog.Show();
     }
 
-    public void Free()
+    private void Free()
     {
         GUIManager.instance.Destroy(m_Dialog);
     }
 
     public void Show()
     {
+        Create();
         m_Dialog.Show();
     }
 

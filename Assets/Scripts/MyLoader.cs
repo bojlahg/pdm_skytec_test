@@ -2,33 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyLoader : MonoBehaviour
+public class MyLoader : MonoBehaviour, IUserInterface
 {
     public string[] m_ProgressTexts;
-    public MyMainMenu m_MyMainMenu;
 
     private GUILoader m_Loader;
     private GUIProgressBar m_ProgressBar;
     private int m_PrevTextIndex = -1;
 
-    public void Create()
+    private void Create()
     {
         m_PrevTextIndex = -1;
 
         m_Loader = GUIManager.instance.Create<GUILoader>("Loader", 2);
         m_Loader.SetTitle("Загрузка");
         m_Loader.onAppearFinish = LoaderStarted;
-        m_Loader.onDisappearFinish = LoaderFinished;
+        m_Loader.onDisappearFinish += LoaderFinished;
+        m_Loader.onDisappearFinish += GUIManager.instance.Destroy;
 
         m_ProgressBar = m_Loader.Create<GUIProgressBar>("ProgressBar");
         m_ProgressBar.SetProgress(0);
         m_ProgressBar.SetText("Загружаем ресурсы...");
-        m_ProgressBar.Show();
+        m_ProgressBar.Show();        
+    }
 
+    private void Free()
+    {
+        GUIManager.instance.Destroy(m_Loader);
+    }
+
+    public void Show()
+    {
+        Create();
         m_Loader.Show();
     }
 
-    public void Free()
+    public void Hide()
     {
         m_Loader.Hide();
     }
@@ -46,11 +55,24 @@ public class MyLoader : MonoBehaviour
 
     private void LoaderStarted(GUIControl ctl)
     {
-        MyApp.instance.StartCoroutine(MyApp.instance.LoadingProgressSimulation());
+        StartCoroutine(LoadingProgressSimulation());
     }
 
     private void LoaderFinished(GUIControl ctl)
     {
-        m_MyMainMenu.Create();
+        MyApp.instance.m_MyMainMenu.Show();
+    }
+
+    public IEnumerator LoadingProgressSimulation()
+    {
+        float timer = 0, duration = 3.0f;
+
+        while (timer < duration)
+        {
+            Refresh(timer / duration);
+            yield return null;
+            timer += Time.deltaTime;
+        }
+        Hide();
     }
 }

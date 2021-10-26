@@ -6,7 +6,7 @@ public class MyModeMenu : MonoBehaviour, IUserInterface
 {
     private GUIWindowMenu m_Menu;
 
-    public void Create()
+    private void Create()
     {
         m_Menu = GUIManager.instance.Create<GUIWindowMenu>("WindowMenu", 0);
         m_Menu.SetTitle("Режим игры");
@@ -49,13 +49,14 @@ public class MyModeMenu : MonoBehaviour, IUserInterface
         m_Menu.Show();
     }
 
-    public void Free()
+    private void Free()
     {
         GUIManager.instance.Destroy(m_Menu);
     }
 
     public void Show()
     {
+        Create();
         m_Menu.Show();
     }
 
@@ -78,7 +79,7 @@ public class MyModeMenu : MonoBehaviour, IUserInterface
     {
         MyApp.instance.m_MySettings.StoreData();
         m_Menu.Hide();
-        MyApp.instance.m_MyGameMenu.Create();
+        MyApp.instance.m_MyGameMenu.Show();
         MyApp.instance.m_MyGame.StartGame();
     }
 
@@ -86,6 +87,6 @@ public class MyModeMenu : MonoBehaviour, IUserInterface
     {
         MyApp.instance.m_MySettings.StoreData();
         m_Menu.Hide();
-        MyApp.instance.m_MyMainMenu.Create();
+        MyApp.instance.m_MyMainMenu.Show();
     }
 }

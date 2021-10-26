@@ -4,8 +4,6 @@ using UnityEngine;
 
 public interface IUserInterface
 {
-    void Create();
-    void Free();
     void Show();
     void Hide();
 }

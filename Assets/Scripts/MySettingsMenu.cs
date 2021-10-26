@@ -8,7 +8,7 @@ public class MySettingsMenu : MonoBehaviour, IUserInterface
 
     public IUserInterface m_ReturnTo;
 
-    public void Create()
+    private void Create()
     {
         m_Menu = GUIManager.instance.Create<GUIWindowMenu>("WindowMenu", 0);
         m_Menu.SetTitle("Настройки");
@@ -36,13 +36,14 @@ public class MySettingsMenu : MonoBehaviour, IUserInterface
         m_Menu.Show();
     }
 
-    public void Free()
+    private void Free()
     {
         GUIManager.instance.Destroy(m_Menu);
     }
 
     public void Show()
     {
+        Create();
         m_Menu.Show();
     }
 
@@ -65,6 +66,6 @@ public class MySettingsMenu : MonoBehaviour, IUserInterface
     {
         MyApp.instance.m_MySettings.StoreData();
         m_Menu.Hide();
-        m_ReturnTo.Create();
+        m_ReturnTo.Show();
     }
 }

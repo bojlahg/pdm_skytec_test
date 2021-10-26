@@ -27,19 +27,6 @@ public class MyApp : MonoBehaviour
 
     private void Start()
     {
-        m_MyLoader.Create();
-    }
-
-    public IEnumerator LoadingProgressSimulation()
-    {
-        float timer = 0, duration = 3.0f;
-        
-        while (timer < duration)
-        {
-            m_MyLoader.Refresh(timer / duration);
-            yield return null;
-            timer += Time.deltaTime;
-        }
-        m_MyLoader.Free();
+        m_MyLoader.Show();
     }
 }

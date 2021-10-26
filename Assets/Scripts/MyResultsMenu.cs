@@ -4,14 +4,33 @@ using UnityEngine;
 
 public class MyResultsMenu : MonoBehaviour, IUserInterface
 {
-    private GUIWindowMenu m_Menu;
+    public string[] m_ResultStrings;
+    public Color[] m_ResultColors;
+    public int m_Result = 0, m_ScoreAnimFrom = 0, m_ScoreAnimTo = 0;
 
-    public void Create()
+    private GUIWindowMenu m_Menu;
+    private GUIText m_ScoreText;
+
+    private void Create()
     {
         m_Menu = GUIManager.instance.Create<GUIWindowMenu>("WindowMenu", 0);
         m_Menu.SetTitle("Результаты");
+        m_Menu.onAppearFinish = AppearFinish;
         m_Menu.onDisappearFinish = GUIManager.instance.Destroy;
         m_Menu.onBackKeyDown = OkButton_Click;
+
+        GUIText resultText = m_Menu.Create<GUIText>("Text");
+        resultText.SetText(m_ResultStrings[m_Result]);
+        resultText.SetColor(m_ResultColors[m_Result]);
+        resultText.Show();
+
+        GUIText usernameText = m_Menu.Create<GUIText>("Text");
+        usernameText.SetText(string.Format("Игрок: {0}", MyApp.instance.m_MySettings.m_Username));
+        usernameText.Show();
+
+        m_ScoreText = m_Menu.Create<GUIText>("Text");
+        m_ScoreText.SetText(string.Format("Количество очков: {0}", m_ScoreAnimFrom));
+        m_ScoreText.Show();
 
         GUIButton okButton = m_Menu.Create<GUIButton>("Button");
         okButton.SetCaption("Назад");
@@ -22,24 +41,47 @@ public class MyResultsMenu : MonoBehaviour, IUserInterface
         m_Menu.Show();
     }
 
-    public void Free()
+    private void Free()
     {
-        
-    }
-
-    public void Hide()
-    {
-        
+        GUIManager.instance.Destroy(m_Menu);
     }
 
     public void Show()
     {
-        
+        Create();
+        m_Menu.Show();
+    }
+
+    public void Hide()
+    {
+        m_Menu.Hide();
+    }
+
+    private void AppearFinish(GUIControl ctl)
+    {
+        StartCoroutine(AnimScore());
+    }
+
+    private IEnumerator AnimScore()
+    {
+        int score = m_ScoreAnimFrom;
+        int delta = 1;
+        if(m_ScoreAnimTo < m_ScoreAnimFrom)
+        {
+            delta = -1;
+        }
+        while (score < m_ScoreAnimTo)
+        {
+            yield return null;
+            m_ScoreText.SetText(string.Format("Количество очков: {0}", score));
+            score += delta;
+        }
+        m_ScoreText.SetText(string.Format("Количество очков: {0}", m_ScoreAnimTo));
     }
 
     private void OkButton_Click()
     {
         m_Menu.Hide();
-        MyApp.instance.m_MyMainMenu.Create();
+        MyApp.instance.m_MyMainMenu.Show();
     }
 }
