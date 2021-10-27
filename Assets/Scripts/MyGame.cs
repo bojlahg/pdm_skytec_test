@@ -107,12 +107,12 @@ public class MyGame : MonoBehaviour, IGame
         m_GameStarted = false;
 
         DestroyField();
-        MyApp.instance.m_MyGameMenu.Hide();
+        
 
         MyApp.instance.m_MyResultsMenu.m_Result = winner;
-        
         MyApp.instance.m_MyResultsMenu.m_ScoreAnimTo = m_ScoreCountSetting.value;
-        MyApp.instance.m_MyResultsMenu.Show();
+
+        GUIManager.instance.ReplaceTop(MyApp.instance.m_MyResultsMenu);
     }
 
     private Vector2 FromIntCoord(Vector2Int pos)

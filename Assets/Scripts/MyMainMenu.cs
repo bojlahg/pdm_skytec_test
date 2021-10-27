@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyMainMenu : MonoBehaviour, IUserInterface
+public class MyMainMenu : MonoBehaviour, IGUILogic
 {
     private GUIWindowMenu m_Menu;
     private Settings.Setting<string> m_UsernameSetting;
@@ -14,78 +14,63 @@ public class MyMainMenu : MonoBehaviour, IUserInterface
         m_ScoreCountSetting = Settings.instance.GetSetting<int>("ScoreCount");
     }
 
-    private void Create()
+    public GUIPanel GetPanel()
     {
-        m_Menu = GUIManager.instance.Create<GUIWindowMenu>("WindowMenu", 0);
-        m_Menu.SetTitle("Главное меню");
-        m_Menu.onDisappearFinish = GUIManager.instance.Destroy;
-        m_Menu.onBackKeyDown = BackButton_Click;
+        if(m_Menu == null)
+        {
+            m_Menu = GUIManager.instance.Create<GUIWindowMenu>(this, "WindowMenu", 0);
+            m_Menu.SetTitle("Главное меню");
+            m_Menu.onDisappearFinish = GUIManager.instance.Destroy;
+            m_Menu.onBackKeyDown = BackButton_Click;
 
-        GUIText usernameText = m_Menu.Create<GUIText>("Text");
-        usernameText.SetText(string.Format("Игрок: {0}", m_UsernameSetting.value));
-        usernameText.Show();
+            GUIText usernameText = m_Menu.Create<GUIText>("Text");
+            usernameText.SetText(string.Format("Игрок: {0}", m_UsernameSetting.value));
+            usernameText.Show();
 
-        GUIText scoreText = m_Menu.Create<GUIText>("Text");
-        scoreText.SetText(string.Format("Количество очков: {0}", m_ScoreCountSetting.value));
-        scoreText.Show();
+            GUIText scoreText = m_Menu.Create<GUIText>("Text");
+            scoreText.SetText(string.Format("Количество очков: {0}", m_ScoreCountSetting.value));
+            scoreText.Show();
 
-        GUIButton buttonPlay = m_Menu.Create<GUIButton>("Button");
-        buttonPlay.SetCaption("Играть");
-        buttonPlay.SetIcon(null);
-        buttonPlay.onButtonClick = PlayButton_Click;
-        buttonPlay.Show();
+            GUIButton buttonPlay = m_Menu.Create<GUIButton>("Button");
+            buttonPlay.SetCaption("Играть");
+            buttonPlay.SetIcon(null);
+            buttonPlay.onButtonClick = PlayButton_Click;
+            buttonPlay.Show();
 
-        GUIButton buttonSettings = m_Menu.Create<GUIButton>("Button");
-        buttonSettings.SetCaption("Настройки");
-        buttonSettings.SetIcon(null);
-        buttonSettings.onButtonClick = SettingsButton_Click;
-        buttonSettings.Show();
+            GUIButton buttonSettings = m_Menu.Create<GUIButton>("Button");
+            buttonSettings.SetCaption("Настройки");
+            buttonSettings.SetIcon(null);
+            buttonSettings.onButtonClick = SettingsButton_Click;
+            buttonSettings.Show();
 
-        GUIButton buttonCredits = m_Menu.Create<GUIButton>("Button");
-        buttonCredits.SetCaption("О Игре");
-        buttonCredits.SetIcon(null);
-        buttonCredits.onButtonClick = CreditsButton_Click;
-        buttonCredits.Show();
+            GUIButton buttonCredits = m_Menu.Create<GUIButton>("Button");
+            buttonCredits.SetCaption("О Игре");
+            buttonCredits.SetIcon(null);
+            buttonCredits.onButtonClick = CreditsButton_Click;
+            buttonCredits.Show();
 
-        GUIButton backButton = m_Menu.Create<GUIButton>("Button");
-        backButton.SetCaption("Назад");
-        backButton.SetIcon(null);
-        backButton.onButtonClick = BackButton_Click;
-        backButton.Show();
-
-        m_Menu.Show();
-    }
-
-    private void Free()
-    {
-        GUIManager.instance.Destroy(m_Menu);
-    }
-
-    public void Show()
-    {
-        Create();
-        m_Menu.Show();
-    }
-
-    public void Hide()
-    {
-        m_Menu.Hide();
+            GUIButton backButton = m_Menu.Create<GUIButton>("Button");
+            backButton.SetCaption("Назад");
+            backButton.SetIcon(null);
+            backButton.onButtonClick = BackButton_Click;
+            backButton.Show();
+        }
+        return m_Menu;
     }
 
     private void PlayButton_Click()
     {
         SoundManager.instance.PlayOnce("ButtonClick");
 
-        m_Menu.Hide();
-        MyApp.instance.m_MyModeMenu.Show();
+        GUIManager.instance.ReplaceTop(MyApp.instance.m_MyModeMenu);
     }
 
     private void SettingsButton_Click()
     {
         SoundManager.instance.PlayOnce("ButtonClick");
 
-        m_Menu.Hide();
-        MyApp.instance.m_MySettingsMenu.Show();
+        GUIManager.instance.ReplaceTop(MyApp.instance.m_MySettingsMenu);
+
         MyApp.instance.m_MySettingsMenu.m_ReturnTo = this;
     }
 
@@ -93,15 +78,14 @@ public class MyMainMenu : MonoBehaviour, IUserInterface
     {
         SoundManager.instance.PlayOnce("ButtonClick");
 
-        m_Menu.Hide();
-        MyApp.instance.m_MyCreditsMenu.Show();        
+        GUIManager.instance.ReplaceTop(MyApp.instance.m_MyCreditsMenu);
     }
 
     private void BackButton_Click()
     {
         SoundManager.instance.PlayOnce("ButtonClick");
 
-        MyApp.instance.m_MyYesNoDialog.Show();
+        GUIManager.instance.AddTop(MyApp.instance.m_MyYesNoDialog);
         MyApp.instance.m_MyYesNoDialog.SetTitle("Ой-Ой!");
         MyApp.instance.m_MyYesNoDialog.SetMessage("Вы точно хотите выйти из игры?");
         MyApp.instance.m_MyYesNoDialog.onAnswer = QuitDialogAnswer;

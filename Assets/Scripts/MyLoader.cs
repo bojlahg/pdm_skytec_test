@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyLoader : MonoBehaviour, IUserInterface
+public class MyLoader : MonoBehaviour, IGUILogic
 {
     public string[] m_ProgressTexts;
 
@@ -10,35 +10,28 @@ public class MyLoader : MonoBehaviour, IUserInterface
     private GUIProgressBar m_ProgressBar;
     private int m_PrevTextIndex = -1;
 
-    private void Create()
+    public GUIPanel GetPanel()
     {
-        m_PrevTextIndex = -1;
+        if (m_Loader == null)
+        {
+            m_PrevTextIndex = -1;
 
-        m_Loader = GUIManager.instance.Create<GUILoader>("Loader", 2);
-        m_Loader.SetTitle("Загрузка");
-        m_Loader.onAppearFinish = LoaderStarted;
-        m_Loader.onDisappearFinish = GUIManager.instance.Destroy;
+            m_Loader = GUIManager.instance.Create<GUILoader>(this, "Loader", 2);
+            m_Loader.SetTitle("Загрузка");
+            m_Loader.onAppearFinish = LoaderStarted;
+            m_Loader.onDisappearFinish = GUIManager.instance.Destroy;
 
-        m_ProgressBar = m_Loader.Create<GUIProgressBar>("ProgressBar");
-        m_ProgressBar.SetProgress(0);
-        m_ProgressBar.SetText("Загружаем ресурсы...");
-        m_ProgressBar.Show();        
+            m_ProgressBar = m_Loader.Create<GUIProgressBar>("ProgressBar");
+            m_ProgressBar.SetProgress(0);
+            m_ProgressBar.SetText("Загружаем ресурсы...");
+            m_ProgressBar.Show();
+        }
+        return m_Loader;
     }
 
     private void Free()
     {
         GUIManager.instance.Destroy(m_Loader);
-    }
-
-    public void Show()
-    {
-        Create();
-        m_Loader.Show();
-    }
-
-    public void Hide()
-    {
-        m_Loader.Hide();
     }
 
     public void Refresh(float v)
@@ -68,10 +61,6 @@ public class MyLoader : MonoBehaviour, IUserInterface
             timer += Time.deltaTime;
         }
 
-        m_Loader.Hide();
-
-        yield return new WaitForSeconds(0.5f); // Задержка для красивости
-
-        MyApp.instance.m_MyMainMenu.Show();
+        GUIManager.instance.ReplaceTop(MyApp.instance.m_MyMainMenu);
     }
 }

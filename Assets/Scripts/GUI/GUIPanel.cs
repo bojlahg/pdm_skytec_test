@@ -9,15 +9,18 @@ public class GUIPanel : GUIContainer
 
     public CanvasGroup m_CanvasGroup;
 
+    [HideInInspector]
+    public IGUILogic m_Logic;
+
     public override void AppearStart()
     {
-        GUIManager.instance.Push(this);
         m_CanvasGroup.blocksRaycasts = false;
         base.AppearStart();
     }
 
     public override void AppearFinish()
     {
+        GUIManager.instance.Push(m_Logic);
         m_CanvasGroup.blocksRaycasts = true;
         base.AppearFinish();
     }

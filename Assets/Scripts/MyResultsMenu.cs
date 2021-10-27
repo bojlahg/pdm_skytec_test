@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyResultsMenu : MonoBehaviour, IUserInterface
+public class MyResultsMenu : MonoBehaviour, IGUILogic
 {
     public string[] m_ResultStrings;
     public Color[] m_ResultColors;
@@ -18,51 +18,37 @@ public class MyResultsMenu : MonoBehaviour, IUserInterface
         m_UsernameSetting = Settings.instance.GetSetting<string>("Username");
     }
 
-    private void Create()
+    public GUIPanel GetPanel()
     {
-        m_Menu = GUIManager.instance.Create<GUIWindowMenu>("WindowMenu", 0);
-        m_Menu.SetTitle("Результаты");
-        m_Menu.onAppearFinish = AppearFinish;
-        m_Menu.onDisappearFinish = GUIManager.instance.Destroy;
-        m_Menu.onBackKeyDown = OkButton_Click;
+        if (m_Menu == null)
+        {
+            m_Menu = GUIManager.instance.Create<GUIWindowMenu>(this, "WindowMenu", 0);
+            m_Menu.SetTitle("Результаты");
+            m_Menu.onAppearFinish = AppearFinish;
+            m_Menu.onDisappearFinish = GUIManager.instance.Destroy;
+            m_Menu.onBackKeyDown = OkButton_Click;
 
-        GUIText resultText = m_Menu.Create<GUIText>("Text");
-        resultText.SetText(m_ResultStrings[m_Result]);
-        resultText.SetColor(m_ResultColors[m_Result]);
-        resultText.Show();
+            GUIText resultText = m_Menu.Create<GUIText>("Text");
+            resultText.SetText(m_ResultStrings[m_Result]);
+            resultText.SetColor(m_ResultColors[m_Result]);
+            resultText.Show();
 
-        GUIText usernameText = m_Menu.Create<GUIText>("Text");
-        usernameText.SetText(string.Format("Игрок: {0}", m_UsernameSetting.value));
-        usernameText.Show();
+            GUIText usernameText = m_Menu.Create<GUIText>("Text");
+            usernameText.SetText(string.Format("Игрок: {0}", m_UsernameSetting.value));
+            usernameText.Show();
 
-        m_ScoreText = m_Menu.Create<GUIText>("Text");
-        m_ScoreText.SetText(string.Format("Количество очков: {0}", m_ScoreAnimFrom));
-        m_ScoreText.Show();
+            m_ScoreText = m_Menu.Create<GUIText>("Text");
+            m_ScoreText.SetText(string.Format("Количество очков: {0}", m_ScoreAnimFrom));
+            m_ScoreText.Show();
 
-        GUIButton okButton = m_Menu.Create<GUIButton>("Button");
-        okButton.SetCaption("Назад");
-        okButton.SetIcon(null);
-        okButton.onButtonClick = OkButton_Click;
-        okButton.Show();
-
-        m_Menu.Show();
-    }
-
-    private void Free()
-    {
-        GUIManager.instance.Destroy(m_Menu);
-    }
-
-    public void Show()
-    {
-        Create();
-        m_Menu.Show();
-    }
-
-    public void Hide()
-    {
-        m_Menu.Hide();
-    }
+            GUIButton okButton = m_Menu.Create<GUIButton>("Button");
+            okButton.SetCaption("Назад");
+            okButton.SetIcon(null);
+            okButton.onButtonClick = OkButton_Click;
+            okButton.Show();
+        }
+        return m_Menu;
+    } 
 
     private void AppearFinish(GUIControl ctl)
     {
@@ -96,8 +82,7 @@ public class MyResultsMenu : MonoBehaviour, IUserInterface
         {
             SoundManager.instance.PlayOnce("ButtonClick");
 
-            m_Menu.Hide();
-            MyApp.instance.m_MyMainMenu.Show();
+            GUIManager.instance.ReplaceTop(MyApp.instance.m_MyMainMenu);
         }
     }
 }

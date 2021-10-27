@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyOkDialog : MonoBehaviour, IUserInterface
+public class MyOkDialog : MonoBehaviour, IGUILogic
 {
     public delegate void OnAnswer(int aidx);
     public OnAnswer onAnswer;
@@ -11,36 +11,22 @@ public class MyOkDialog : MonoBehaviour, IUserInterface
 
     private GUIDialog m_Dialog;
 
-    private void Create()
+    public GUIPanel GetPanel()
     {
-        m_Dialog = GUIManager.instance.Create<GUIDialog>("Dialog", 1);
-       
-        m_Dialog.onBackKeyDown = OkButton_Click;
-        m_Dialog.onDisappearFinish = GUIManager.instance.Destroy;
+        if (m_Dialog == null)
+        {
+            m_Dialog = GUIManager.instance.Create<GUIDialog>(this, "Dialog", 1);
 
-        GUIButton okButton = m_Dialog.Create<GUIButton>("Button");
-        okButton.SetCaption("Ok");
-        okButton.SetIcon(m_OkIconSprite);
-        okButton.onButtonClick = OkButton_Click;
-        okButton.Show();
+            m_Dialog.onBackKeyDown = OkButton_Click;
+            m_Dialog.onDisappearFinish = GUIManager.instance.Destroy;
 
-        m_Dialog.Show();
-    }
-
-    private void Free()
-    {
-        GUIManager.instance.Destroy(m_Dialog);
-    }
-
-    public void Show()
-    {
-        Create();
-        m_Dialog.Show();
-    }
-
-    public void Hide()
-    {
-        m_Dialog.Hide();
+            GUIButton okButton = m_Dialog.Create<GUIButton>("Button");
+            okButton.SetCaption("Ok");
+            okButton.SetIcon(m_OkIconSprite);
+            okButton.onButtonClick = OkButton_Click;
+            okButton.Show();
+        }
+        return m_Dialog;
     }
 
     public void SetTitle(string t)

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyYesNoDialog : MonoBehaviour, IUserInterface
+public class MyYesNoDialog : MonoBehaviour, IGUILogic
 {
     public delegate void OnAnswer(int aidx);
     public OnAnswer onAnswer;
@@ -11,42 +11,28 @@ public class MyYesNoDialog : MonoBehaviour, IUserInterface
 
     private GUIDialog m_Dialog;
 
-    private void Create()
+    public GUIPanel GetPanel()
     {
-        m_Dialog = GUIManager.instance.Create<GUIDialog>("Dialog", 1);
-       
-        m_Dialog.onBackKeyDown = YesButton_Click;
-        m_Dialog.onDisappearFinish = GUIManager.instance.Destroy;
+        if (m_Dialog == null)
+        {
+            m_Dialog = GUIManager.instance.Create<GUIDialog>(this, "Dialog", 1);
 
-        GUIButton yesButton = m_Dialog.Create<GUIButton>("Button");
-        yesButton.SetCaption("Да");
-        yesButton.SetIcon(m_YesIconSprite);
-        yesButton.onButtonClick = YesButton_Click;
-        yesButton.Show();
+            m_Dialog.onBackKeyDown = YesButton_Click;
+            m_Dialog.onDisappearFinish = GUIManager.instance.Destroy;
 
-        GUIButton noButton = m_Dialog.Create<GUIButton>("Button");
-        noButton.SetCaption("Нет");
-        noButton.SetIcon(m_NoIconSprite);
-        noButton.onButtonClick = NoButton_Click;
-        noButton.Show();
+            GUIButton yesButton = m_Dialog.Create<GUIButton>("Button");
+            yesButton.SetCaption("Да");
+            yesButton.SetIcon(m_YesIconSprite);
+            yesButton.onButtonClick = YesButton_Click;
+            yesButton.Show();
 
-        m_Dialog.Show();
-    }
-
-    private void Free()
-    {
-        GUIManager.instance.Destroy(m_Dialog);
-    }
-
-    public void Show()
-    {
-        Create();
-        m_Dialog.Show();
-    }
-
-    public void Hide()
-    {
-        m_Dialog.Hide();
+            GUIButton noButton = m_Dialog.Create<GUIButton>("Button");
+            noButton.SetCaption("Нет");
+            noButton.SetIcon(m_NoIconSprite);
+            noButton.onButtonClick = NoButton_Click;
+            noButton.Show();
+        }
+        return m_Dialog;
     }
 
     public void SetTitle(string t)

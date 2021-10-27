@@ -2,54 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyGameMenu : MonoBehaviour, IUserInterface
+public class MyGameMenu : MonoBehaviour, IGUILogic
 {
     public Sprite m_PauseIconSprite;
 
     private GUIScreenMenu m_Menu;
     private GUIText m_TimerText;
 
-    private void Create()
+    public GUIPanel GetPanel()
     {
-        m_Menu = GUIManager.instance.Create<GUIScreenMenu>("ScreenMenu", 0);
-        m_Menu.onBackKeyDown = PauseButton_Click;
+        if(m_Menu == null)
+        {
+            m_Menu = GUIManager.instance.Create<GUIScreenMenu>(this, "ScreenMenu", 0);
+            m_Menu.onBackKeyDown = PauseButton_Click;
 
-        m_TimerText = m_Menu.GetControl<GUIText>("TimerText");
-        m_TimerText.SetText("0");
-        m_TimerText.Show();
+            m_TimerText = m_Menu.GetControl<GUIText>("TimerText");
+            m_TimerText.SetText("0");
+            m_TimerText.Show();
 
-        GUIButton buttonPause = m_Menu.GetControl<GUIButton>("PauseButton");
-        buttonPause.SetCaption(null);
-        buttonPause.SetIcon(m_PauseIconSprite);
-        buttonPause.onButtonClick = PauseButton_Click;
-        buttonPause.Show();
-
-        m_Menu.Show();
-    }
-
-    private void Free()
-    {
-        GUIManager.instance.Destroy(m_Menu);
-    }
-
-    public void Show()
-    {
-        Create();
-        m_Menu.Show();
-    }
-
-    public void Hide()
-    {
-        m_Menu.Hide();
+            GUIButton buttonPause = m_Menu.GetControl<GUIButton>("PauseButton");
+            buttonPause.SetCaption(null);
+            buttonPause.SetIcon(m_PauseIconSprite);
+            buttonPause.onButtonClick = PauseButton_Click;
+            buttonPause.Show();
+        }
+        return m_Menu;
     }
 
     private void PauseButton_Click()
     {
         SoundManager.instance.PlayOnce("ButtonClick");
 
-        m_Menu.Hide();
+        GUIManager.instance.ReplaceTop(MyApp.instance.m_MyPauseMenu);
         MyApp.instance.m_MyGame.PauseGame();
-        MyApp.instance.m_MyPauseMenu.Show();
     }
 
     public void SetTimer(float t)

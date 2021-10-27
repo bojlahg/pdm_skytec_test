@@ -2,60 +2,45 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyPauseMenu : MonoBehaviour, IUserInterface
+public class MyPauseMenu : MonoBehaviour, IGUILogic
 {
     private GUIWindowMenu m_Menu;
 
-    private void Create()
+    public GUIPanel GetPanel()
     {
-        m_Menu = GUIManager.instance.Create<GUIWindowMenu>("WindowMenu", 0);
-        m_Menu.SetTitle("Пауза");
-        m_Menu.onDisappearFinish = GUIManager.instance.Destroy;
-        m_Menu.onBackKeyDown = HomeButton_Click;
+        if (m_Menu == null)
+        {
+            m_Menu = GUIManager.instance.Create<GUIWindowMenu>(this, "WindowMenu", 0);
+            m_Menu.SetTitle("Пауза");
+            m_Menu.onDisappearFinish = GUIManager.instance.Destroy;
+            m_Menu.onBackKeyDown = HomeButton_Click;
 
-        GUIButton buttonSettings = m_Menu.Create<GUIButton>("Button");
-        buttonSettings.SetCaption("Настройки");
-        buttonSettings.SetIcon(null);
-        buttonSettings.onButtonClick = SettingsButton_Click;
-        buttonSettings.Show();
+            GUIButton buttonSettings = m_Menu.Create<GUIButton>("Button");
+            buttonSettings.SetCaption("Настройки");
+            buttonSettings.SetIcon(null);
+            buttonSettings.onButtonClick = SettingsButton_Click;
+            buttonSettings.Show();
 
-        GUIButton buttonHome = m_Menu.Create<GUIButton>("Button");
-        buttonHome.SetCaption("Выйти");
-        buttonHome.SetIcon(null);
-        buttonHome.onButtonClick = HomeButton_Click;
-        buttonHome.Show();
+            GUIButton buttonHome = m_Menu.Create<GUIButton>("Button");
+            buttonHome.SetCaption("Выйти");
+            buttonHome.SetIcon(null);
+            buttonHome.onButtonClick = HomeButton_Click;
+            buttonHome.Show();
 
-        GUIButton buttonResume = m_Menu.Create<GUIButton>("Button");
-        buttonResume.SetCaption("Продолжить");
-        buttonResume.SetIcon(null);
-        buttonResume.onButtonClick = ResumeButton_Click;
-        buttonResume.Show();
-
-        m_Menu.Show();
-    }
-
-    private void Free()
-    {
-        GUIManager.instance.Destroy(m_Menu);
-    }
-
-    public void Show()
-    {
-        Create();
-        m_Menu.Show();
-    }
-
-    public void Hide()
-    {
-        m_Menu.Hide();
+            GUIButton buttonResume = m_Menu.Create<GUIButton>("Button");
+            buttonResume.SetCaption("Продолжить");
+            buttonResume.SetIcon(null);
+            buttonResume.onButtonClick = ResumeButton_Click;
+            buttonResume.Show();
+        }
+        return m_Menu;
     }
 
     private void SettingsButton_Click()
     {
         SoundManager.instance.PlayOnce("ButtonClick");
 
-        m_Menu.Hide();
-        MyApp.instance.m_MySettingsMenu.Show();
+        GUIManager.instance.ReplaceTop(MyApp.instance.m_MySettingsMenu);
         MyApp.instance.m_MySettingsMenu.m_ReturnTo = this;
     }
 
@@ -63,7 +48,7 @@ public class MyPauseMenu : MonoBehaviour, IUserInterface
     {
         SoundManager.instance.PlayOnce("ButtonClick");
 
-        MyApp.instance.m_MyYesNoDialog.Show();
+        GUIManager.instance.AddTop(MyApp.instance.m_MyYesNoDialog);
         MyApp.instance.m_MyYesNoDialog.SetTitle("Покинуть игру?");
         MyApp.instance.m_MyYesNoDialog.SetMessage("Вы точно хотите прервать неоконченную игру?");
         MyApp.instance.m_MyYesNoDialog.onAnswer = AbortDialogAnswer;
@@ -73,8 +58,8 @@ public class MyPauseMenu : MonoBehaviour, IUserInterface
     {
         if (aidx == 0)
         {
-            m_Menu.Hide();
-            MyApp.instance.m_MyMainMenu.Show();
+            GUIManager.instance.ReplaceTop(MyApp.instance.m_MyMainMenu);
+
             MyApp.instance.m_MyGame.AbortGame();
         }
     }
@@ -83,8 +68,8 @@ public class MyPauseMenu : MonoBehaviour, IUserInterface
     {
         SoundManager.instance.PlayOnce("ButtonClick");
 
-        m_Menu.Hide();
-        MyApp.instance.m_MyGameMenu.Show();
+        GUIManager.instance.ReplaceTop(MyApp.instance.m_MyGameMenu);
+
         MyApp.instance.m_MyGame.UnpauseGame();
     }
 }

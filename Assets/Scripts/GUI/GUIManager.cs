@@ -12,7 +12,8 @@ public class GUIManager : MonoBehaviour
     private static GUIManager m_Instance;
 
     private Dictionary<string, GameObject> m_PrefabDict = new Dictionary<string, GameObject>();
-    private List<GUIPanel> m_PanelStack = new List<GUIPanel>();
+
+    private Stack<IGUILogic> m_LogicStack = new Stack<IGUILogic>();
 
 
     private void Awake()
@@ -49,14 +50,15 @@ public class GUIManager : MonoBehaviour
         }
     }
 
-    public T Create<T>(string n, int layerIdx) where T: GUIControl
+    public T Create<T>(IGUILogic iguil, string n, int layerIdx) where T: GUIPanel
     {
         GameObject prefab;
         if(m_PrefabDict.TryGetValue(n, out prefab))
         {
-            GUIControl ctl = GameObject.Instantiate(prefab, m_Layers[layerIdx]).GetComponent<T>();
+            GUIPanel ctl = GameObject.Instantiate(prefab, m_Layers[layerIdx]).GetComponent<T>();
             if(ctl != null && ctl is T)
             {
+                ctl.m_Logic = iguil;
                 ctl.Init();
                 return (T)ctl;
             }
@@ -94,43 +96,68 @@ public class GUIManager : MonoBehaviour
         GameObject.Destroy(ctl.gameObject);
     }
 
-    public void Push(GUIPanel ctl)
+    public void ReplaceTop(IGUILogic iguil)
     {
-        GUIPanel top = GetTopPanel();
-        if(top != null)
+        IGUILogic topiguil = GetTopLogic();
+        if(topiguil != null)
         {
-            top.LostFocus();
+            topiguil.GetPanel().Hide();
         }
-        m_PanelStack.Add(ctl);
+        if (iguil != null)
+        {
+            iguil.GetPanel().Show();
+        }
+    }
+
+    public void AddTop(IGUILogic iguil)
+    {
+        if (iguil != null)
+        {
+            iguil.GetPanel().Show();
+        }
+    }
+
+    public void Push(IGUILogic iguil)
+    {
+        IGUILogic topiguil = GetTopLogic();
+        if (topiguil != null)
+        {
+            GUIPanel ctl = topiguil.GetPanel();
+            ctl.LostFocus();
+        }
+        m_LogicStack.Push(iguil);
     }
 
     public void Pop()
     {
-        m_PanelStack.RemoveAt(m_PanelStack.Count - 1);
+        m_LogicStack.Pop();
 
-        GUIPanel top = GetTopPanel();
-        if (top != null)
+        IGUILogic iguil = GetTopLogic();
+        if (iguil != null)
         {
-            top.GotFocus();
+            GUIPanel ctl = iguil.GetPanel();
+            ctl.GotFocus();
         }
     }
 
-    public GUIPanel GetTopPanel()
+    public IGUILogic GetTopLogic()
     {
-        if(m_PanelStack.Count > 0)
-        { 
-            return m_PanelStack[m_PanelStack.Count - 1];
+        IGUILogic iguil = null;
+        if (m_LogicStack.Count > 0)
+        {
+            iguil = m_LogicStack.Peek();
         }
-        return null;
+        return iguil;
     }
 
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            GUIPanel ctl = GetTopPanel();
-            if (ctl != null)
+            IGUILogic iguil = GetTopLogic();
+            if (iguil != null)
             {
+                GUIPanel ctl = iguil.GetPanel();
                 if (ctl.onBackKeyDown != null)
                 {
                     ctl.onBackKeyDown.Invoke();

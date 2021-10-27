@@ -13,30 +13,6 @@ public static class StandartExtensions
         return default(T);
     }
 
-    /*static public void Compact<T>(this List<T> list) where T: class
-    {
-        int i = 0, j = 1;
-        while(i < list.Count)
-        {
-            if(list[i] == null)
-            {
-                if(j < i)
-                {
-
-                }
-                else
-                {
-
-                }
-            }
-            else
-            {
-                ++i;
-                ++j;
-            }
-        }
-    }*/
-
     static public T GetRandom<T>(this System.Array arr)
     {
         if (arr.Length > 0)

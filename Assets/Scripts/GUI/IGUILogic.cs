@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IUserInterface
+public interface IGUILogic
 {
-    void Show();
-    void Hide();
+    GUIPanel GetPanel();
 }

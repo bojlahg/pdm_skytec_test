@@ -35,6 +35,6 @@ public class MyApp : MonoBehaviour
 
     private void Start()
     {
-        m_MyLoader.Show();
+        GUIManager.instance.ReplaceTop(m_MyLoader);
     }
 }
